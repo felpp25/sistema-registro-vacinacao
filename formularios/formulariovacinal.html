@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gerador de QR Code - Vacina</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f6f9;
+      color: #333;
+      padding: 20px;
+      margin: 0;
+    }
+
+    h1 {
+      text-align: center;
+      color: #007BFF;
+    }
+
+    #formulario {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 500;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    button {
+      margin-top: 25px;
+      padding: 12px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #qrcode-container {
+      display: none;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    #qrcode {
+      margin: 0 auto;
+      width: 700px;
+      height: 700px;
+    }
+
+    #qrcode > img,
+    #qrcode > canvas {
+      width: 100% !important;
+      height: auto !important;
+      max-width: 700px;
+      max-height: 700px;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Gerador de QR Code - Vacinação</h1>
+
+  <div id="formulario">
+    <label>Vacina: <input type="text" id="vacina" /></label>
+    <label>Fabricante: <input type="text" id="fabricante" /></label>
+    <label>Lote: <input type="text" id="lote" /></label>
+    <label>Data da Aplicação: <input type="date" id="data" /></label>
+    <label>Dose: <input type="text" id="dose" placeholder="1ª, 2ª, reforço..." /></label>
+    <label>Nome do Aplicador: <input type="text" id="aplicador" /></label>
+    <label>Registro Profissional (CRM, COREN etc): <input type="text" id="registroProf" /></label>
+    <label>Unidade de Saúde: <input type="text" id="unidade" /></label>
+
+    <button onclick="gerarQRCode()">Gerar QR Code</button>
+  </div>
+
+  <div id="qrcode-container">
+    <div id="qrcode"></div>
+    <div class="btn-group">
+      <button onclick="voltar()">Voltar e Editar</button>
+      <button onclick="location.reload()">Encerrar</button>
+    </div>
+  </div>
+
+  <script>
+    let dadosTemporarios = {};
+
+    async function gerarQRCode() {
+      dadosTemporarios = {
+        vacina: document.getElementById("vacina").value,
+        fabricante: document.getElementById("fabricante").value,
+        lote: document.getElementById("lote").value,
+        data: document.getElementById("data").value,
+        dose: document.getElementById("dose").value,
+        aplicador: document.getElementById("aplicador").value,
+        registroProf: document.getElementById("registroProf").value,
+        unidade: document.getElementById("unidade").value
+      };
+
+      // Verifica se algum campo está vazio
+      for (const key in dadosTemporarios) {
+        if (dadosTemporarios[key].trim() === "") {
+          alert("Por favor, preencha todos os campos antes de gerar o QR Code.");
+          return;
+        }
+      }
+
+      const json = JSON.stringify(dadosTemporarios);
+
+      // Envia os dados para o backend (Node.js)
+      try {
+        const response = await fetch('http://localhost:3000/salvarVacina', {
+          method: 'POST',
+          headers: {
+          'Content-Type': 'application/json',
+          },
+          body: json,
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+          // Recebe o ID do QR Code gerado e cria o QR Code
+          const qrCodeLink = `http://localhost:3000/validar/${result.id}`;
+          document.getElementById("formulario").style.display = "none";
+          document.getElementById("qrcode-container").style.display = "block";
+          document.getElementById("qrcode").innerHTML = "";
+
+          new QRCode(document.getElementById("qrcode"), {
+            text: qrCodeLink,
+            width: 900,
+            height: 900
+          });
+        } else {
+          alert("Erro ao salvar os dados. Tente novamente.");
+        }
+      } catch (error) {
+        console.error('Erro:', error);
+        alert("Erro ao comunicar com o servidor.");
+      }
+    }
+
+    function voltar() {
+      // Preenche novamente os campos
+      document.getElementById("vacina").value = dadosTemporarios.vacina || "";
+      document.getElementById("fabricante").value = dadosTemporarios.fabricante || "";
+      document.getElementById("lote").value = dadosTemporarios.lote || "";
+      document.getElementById("data").value = dadosTemporarios.data || "";
+      document.getElementById("dose").value = dadosTemporarios.dose || "";
+      document.getElementById("aplicador").value = dadosTemporarios.aplicador || "";
+      document.getElementById("registroProf").value = dadosTemporarios.registroProf || "";
+      document.getElementById("unidade").value = dadosTemporarios.unidade || "";
+
+      document.getElementById("qrcode-container").style.display = "none";
+      document.getElementById("formulario").style.display = "block";
+    }
+  </script>
+
+</body>
+</html>

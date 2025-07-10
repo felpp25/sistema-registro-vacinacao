@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="239.17854"
+   height="63.162998"
+   viewBox="0 0 239.17854 63.163"
+   version="1.1"
+   id="svg28"
+   sodipodi:docname="logo.svg"
+   inkscape:version="1.0.1 (c497b03c, 2020-09-10)">
+  <metadata
+     id="metadata34">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs32" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1258"
+     inkscape:window-height="666"
+     id="namedview30"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="2.7873517"
+     inkscape:cx="138.67974"
+     inkscape:cy="10.790488"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="VACINA-2"
+     inkscape:document-rotation="0" />
+  <g
+     id="Grupo_12634"
+     data-name="Grupo 12634"
+     transform="translate(549.943,-434.089)">
+    <g
+       id="VACINA"
+       style="isolation:isolate">
+      <g
+         aria-label="VACINA"
+         transform="translate(-409.289,476.612)"
+         id="VACINA-2"
+         style="font-weight:700;font-size:23.972px;font-family:Montserrat-Bold, Montserrat;isolation:isolate;fill:#41576d">
+        <path
+           d="M 18.122832,-16.7804 10.859316,0 h -3.83552 l -7.239544,-16.7804 h 4.1951 l 5.106036,11.986 5.177952,-11.986 z"
+           id="path31" />
+        <path
+           d="m 30.036541,-3.5958 h -7.7909 L 20.759377,0 h -3.979352 l 7.479264,-16.7804 h 3.83552 L 35.598045,0 h -4.07524 z m -1.222572,-2.948556 -2.660892,-6.424496 -2.660892,6.424496 z"
+           id="path33" />
+        <path
+           d="m 45.13553,0.287664 q -2.565004,0 -4.650568,-1.102712 -2.061592,-1.126684 -3.260192,-3.092388 -1.174628,-1.989676 -1.174628,-4.482764 0,-2.493088 1.174628,-4.458792 1.1986,-1.989676 3.260192,-3.092388 2.085564,-1.126684 4.67454,-1.126684 2.181452,0 3.931408,0.767104 1.773928,0.767104 2.972528,2.205424 l -2.493088,2.301312 q -1.702012,-1.965704 -4.219072,-1.965704 -1.55818,0 -2.780752,0.695188 -1.222572,0.671216 -1.91776,1.893788 -0.671216,1.2225719 -0.671216,2.780752 0,1.55818 0.671216,2.780752 0.695188,1.222572 1.91776,1.91776 1.222572,0.671216 2.780752,0.671216 2.51706,0 4.219072,-1.989676 l 2.493088,2.301312 q -1.1986,1.462292 -2.972528,2.229396 -1.773928,0.767104 -3.95538,0.767104 z"
+           id="path35" />
+        <path
+           d="m 54.662528,-16.7804 h 3.883464 V 0 h -3.883464 z"
+           id="path37" />
+        <path
+           d="M 77.918366,-16.7804 V 0 H 74.73009 L 66.363862,-10.1881 V 0 h -3.83552 v -16.7804 h 3.212248 l 8.342256,10.1881 v -10.1881 z"
+           id="path39" />
+        <path
+           d="m 92.96304,-3.5958 h -7.7909 L 83.685876,0 h -3.979352 l 7.479264,-16.7804 h 3.83552 L 98.524544,0 h -4.07524 z m -1.222572,-2.948556 -2.660892,-6.424496 -2.660892,6.424496 z"
+           id="path41" />
+      </g>
+    </g>
+    <g
+       id="Grupo_12589"
+       data-name="Grupo 12589">
+      <g
+         id="Grupo_12587"
+         data-name="Grupo 12587">
+        <path
+           id="Caminho_8995"
+           data-name="Caminho 8995"
+           d="m -458.841,476.755 -3.4,-4.9 h -3.748 v 4.9 h -4.074 v -17.608 h 7.62 a 9.774,9.774 0 0 1 4.062,0.78 6.036,6.036 0 0 1 2.654,2.214 6.108,6.108 0 0 1 0.931,3.4 5.969,5.969 0 0 1 -0.944,3.384 5.978,5.978 0 0 1 -2.678,2.175 l 3.949,5.659 z m -1.032,-13.495 a 4.275,4.275 0 0 0 -2.792,-0.793 h -3.32 v 6.138 h 3.32 a 4.235,4.235 0 0 0 2.792,-0.805 2.792,2.792 0 0 0 0.956,-2.264 2.786,2.786 0 0 0 -0.956,-2.276 z"
+           fill="#3fa9f5" />
+        <path
+           id="Caminho_8996"
+           data-name="Caminho 8996"
+           d="m -435.424,459.147 v 17.608 h -3.345 l -8.779,-10.69 v 10.69 h -4.025 v -17.608 h 3.371 l 8.753,10.691 v -10.691 z"
+           fill="#3fa9f5" />
+      </g>
+      <g
+         id="Grupo_12588"
+         data-name="Grupo 12588">
+        <rect
+           id="Retângulo_1002"
+           data-name="Retângulo 1002"
+           width="5.9349999"
+           height="17.851"
+           transform="translate(-424.142,459.173)"
+           fill="#3fa9f5"
+           x="0"
+           y="0" />
+        <rect
+           id="Retângulo_1003"
+           data-name="Retângulo 1003"
+           width="17.851"
+           height="5.9349999"
+           transform="translate(-430.1,465.131)"
+           fill="#3fa9f5"
+           x="0"
+           y="0" />
+      </g>
+    </g>
+    <g
+       id="Grupo_12635"
+       data-name="Grupo 12635">
+      <rect
+         id="Retângulo_1004"
+         data-name="Retângulo 1004"
+         width="63.162998"
+         height="63.162998"
+         rx="5.7490001"
+         transform="translate(-549.943,434.089)"
+         fill="#3fa9f5"
+         x="0"
+         y="0" />
+      <g
+         id="Grupo_12593"
+         data-name="Grupo 12593">
+        <g
+           id="Grupo_12592"
+           data-name="Grupo 12592">
+          <g
+             id="Grupo_12591"
+             data-name="Grupo 12591">
+            <path
+               id="Caminho_8997"
+               data-name="Caminho 8997"
+               d="m -538.959,469.515 c 1.005,-2.3 5.814,-12.973 6.716,-14.976 a 0.844,0.844 0 0 1 0.482,-0.445 l 4.752,-1.7 a 0.841,0.841 0 0 1 0.791,0.121 l 0.761,0.575 a 0.84,0.84 0 0 0 0.551,0.17 l 2.085,-0.111 a 0.845,0.845 0 0 1 0.394,0.075 l 3.485,1.591 a 0.831,0.831 0 0 0 0.44,0.071 l 8.836,-0.962 a 0.941,0.941 0 0 1 0.184,0 l 7.089,0.788 a 0.838,0.838 0 0 1 0.566,0.312 l 1.861,2.344 a 0.823,0.823 0 0 1 0.122,0.211 l 5.584,14.022 a 0.839,0.839 0 0 1 -0.058,0.74 v 0 a 0.84,0.84 0 0 1 -0.462,0.37 l -0.773,0.252 a 0.833,0.833 0 0 1 -0.257,0.041 l -15.13,0.064 a 0.841,0.841 0 0 1 -0.795,-0.556 l -0.118,-0.33 a 0.84,0.84 0 0 0 -1.075,-0.506 l -0.013,0.005 -1.241,0.47 a 0.841,0.841 0 0 0 -0.533,0.919 l 0.672,4.187 a 0.839,0.839 0 0 1 -0.286,0.774 l -2.044,1.735 a 0.841,0.841 0 0 1 -1.185,-0.1 0.867,0.867 0 0 1 -0.092,-0.132 l -0.546,-0.972 a 0.845,0.845 0 0 0 -0.495,-0.393 l -1.75,-0.518 a 0.839,0.839 0 0 0 -0.657,0.078 l -2.53,1.454 a 0.841,0.841 0 0 1 -0.815,0.013 l -2.863,-1.53 a 0.841,0.841 0 0 1 -0.438,-0.843 l 0.162,-1.327 a 0.836,0.836 0 0 1 0.159,-0.4 l 3.453,-4.656 a 0.842,0.842 0 0 0 0.082,-0.867 l -0.3,-0.615 a 0.842,0.842 0 0 0 -1.053,-0.421 l -6.168,2.321 a 0.842,0.842 0 0 0 -0.54,0.871 l 0.015,0.155 a 0.839,0.839 0 0 1 -0.308,0.737 l -3.637,2.945 a 0.842,0.842 0 0 1 -0.685,0.172 l -5.525,-1.049 a 0.84,0.84 0 0 1 -0.668,-0.982 0.817,0.817 0 0 1 0.035,-0.129 l 1.026,-2.843 a 0.837,0.837 0 0 1 0.685,-0.548 l 1.385,-0.176 a 0.843,0.843 0 0 0 0.667,-0.496 z"
+               fill="#ffffff" />
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

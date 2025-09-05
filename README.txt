@@ -62,4 +62,4 @@ Este projeto foi desenvolvido como parte do Trabalho de Conclusão de Curso (TCC
 
 ---
 
-Feito com 💉 por [Wallace & Felp]
+Feito por [Wallace & Felp]

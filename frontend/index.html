@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menu Inicial - Carteira de Vacinação</title>
+<link rel="stylesheet" href="./css/index.css">
+<link rel="stylesheet" href="./components/navbar.css">
+</head>
+<body>
+
+<div id="navbar-container"></div>
+
+<!-- Menu principal -->
+<div class="menu-container">
+  <button class="menu-button" id="buscarRegistrarBtn">Buscar / Registrar</button>
+  <button class="menu-button" onclick="window.location.href='campanha.html'">Nova Campanha</button>
+</div>
+
+<!-- Modal Buscar -->
+<div class="modal" id="modalBuscar">
+  <div class="modal-content">
+    <span class="close-btn" id="closeModal">&times;</span>
+    <h2>Buscar Usuário</h2>
+    <input type="text" id="cartaoInput" placeholder="Digite o número do cartão de vacinação">
+    <button id="buscarBtn">Buscar</button>
+  </div>
+</div>
+
+<script src="./js/index.js"></script>
+<script src="./components/navbar.js"></script>
+
+</body>
+</html>

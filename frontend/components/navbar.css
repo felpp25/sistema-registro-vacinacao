@@ -1,0 +1,38 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1e3a8a;
+  padding: 10px 20px;
+  color: white;
+}
+
+.navbar .logo {
+  height: 40px;
+}
+
+.navbar-right .btn {
+  margin-left: 10px;
+  padding: 8px 16px;
+  border: none;
+  background: #3b82f6;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.navbar-right .btn:hover {
+  background: #2563eb;
+}

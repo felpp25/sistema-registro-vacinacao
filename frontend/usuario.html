@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Cartão de Vacinação</title>
+    <link rel="stylesheet" href="./css/usuario.css" />
+    <link rel="stylesheet" href="./components/navbar.css" />
+  </head>
+  <body>
+    <!-- navbar -->
+    <div id="navbar-container"></div>
+
+    <!-- Conteúdo do usuário -->
+    <div class="container">
+      <div class="perfil">
+        <header>
+          <img id="avatar" class="avatar" alt="Foto de perfil" />
+          <div class="info">
+            <p>Olá,</p>
+            <h2 id="nome">[nome]</h2>
+          </div>
+        </header>
+
+        <section id="dadosPessoais">
+          <h3>Dados pessoais</h3>
+          <p>
+            <strong>Data de nascimento:</strong> <span id="nascimento">—</span>
+          </p>
+          <p><strong>Sexo:</strong> <span id="sexo">—</span></p>
+          <p>
+            <strong>Código de vacinação:</strong> <span id="cartao">—</span>
+          </p>
+        </section>
+
+        <section>
+          <h3>Vacinas pendentes ⏳</h3>
+          <div id="pendentesList"></div>
+        </section>
+
+        <section>
+          <h3>Vacinas concluídas ✅</h3>
+          <div id="concluidasList"></div>
+        </section>
+      </div>
+
+      <div class="formulario">
+        <h3>Registrar nova vacina</h3>
+        <form id="vacinaForm">
+          <label>Vacina:</label>
+          <select id="vacinaSelect" required>
+            <option value="">Carregando vacinas...</option>
+          </select>
+          <input
+            type="text"
+            id="fabricanteInput"
+            placeholder="Fabricante"
+            readonly
+          />
+
+          <label>Tipo da dose (1ª, 2ª, Única, etc):</label>
+          <input type="text" id="doseTipo" required />
+
+          <label>Data de aplicação:</label>
+          <input type="date" id="dataAplicacao" required />
+
+          <label>Lote:</label>
+          <input type="text" id="lote" />
+
+          <label>Próxima aplicação (se houver):</label>
+          <input type="date" id="proxAplicacao" />
+
+          <label>Posto de vacinação:</label>
+          <select id="posto">
+            <option value="">Carregando postos...</option>
+          </select>
+
+          <button type="submit" class="btn">Salvar vacina</button>
+        </form>
+        <div id="error" class="error"></div>
+      </div>
+    </div>
+
+    <script src="./js/usuario.js"></script>
+    <script src="./components/navbar.js"></script>
+  </body>
+</html>

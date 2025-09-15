@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<title>Gerador de QR Code - Campanha</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<link rel="stylesheet" href="./css/campanha.css">
+<link rel="stylesheet" href="./components/navbar.css">
+</head>
+<body>
+
+<div id="navbar-container"></div>  
+
+<!-- Formulário  -->
+<h1>Gerador de QR Code - Campanha</h1>
+
+<div id="formulario">
+  <label>Vacina:
+    <select id="vacina"></select>
+  </label>
+  <label>Fabricante: <input type="text" id="fabricante" readonly /></label>
+  <label>Dose: <input type="text" id="dose" placeholder="1ª, 2ª, reforço..." /></label>
+  <label>Aplicador: <input type="text" id="aplicador" /></label>
+
+  <button id="btn-gerar">Gerar QR Code</button>
+  <div id="mensagem-erro"></div>
+</div>
+
+<div id="qrcode-container">
+  <div id="qrcode"></div>
+  <div class="btn-group">
+    <button onclick="encerrarCampanha()">Encerrar</button>
+    <button onclick="imprimirQRCode()">Imprimir QR Code</button>
+  </div>
+</div>
+
+<script src="./components/navbar.js"></script>
+<script src="./js/campanha.js"></script>
+
+</body>
+</html>

@@ -14,6 +14,7 @@ import vacinasRoutes from "./routes/vacinas.js";
 import usuarioRegistrarRoutes from "./routes/usuarioRegistrar.js";
 import postosRoutes from "./routes/postos.js";
 
+
 // Configuração
 
 const app = express();

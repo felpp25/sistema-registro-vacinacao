@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import crypto from "crypto";
 import { enviarEmailAtivacao } from "../utils/mail.js";
 
+
 const router = express.Router();
 
 // 📌 Registrar novo aplicador

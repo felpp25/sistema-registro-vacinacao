@@ -3,33 +3,7 @@ import { supabase } from "../db.js";
 
 const router = express.Router();
 
-/**
- * Funções auxiliares
- */
-function formatDateTimeBR(dateStr) {
-  if (!dateStr) return null;
-  const date = new Date(dateStr);
-  if (isNaN(date)) return dateStr;
-  return date.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
-}
 
-function formatDateOnlyBR(dateStr) {
-  if (!dateStr) return null;
-  const date = new Date(dateStr);
-  if (isNaN(date)) return dateStr;
-  return date.toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" }) + " 00:00:00";
-}
-
-function formatCampanha(c) {
-  if (!c) return null;
-  return {
-    ...c,
-    data: formatDateOnlyBR(c.data),
-    criado_em: formatDateTimeBR(c.criado_em),
-    atualizado_em: formatDateTimeBR(c.atualizado_em),
-    deleted_em: formatDateTimeBR(c.deleted_em)
-  };
-}
 
 /**
  * CREATE - Criar nova campanha
@@ -38,27 +12,25 @@ router.post("/", async (req, res) => {
   try {
     console.log("POST /campanhas - corpo recebido:", req.body);
 
-    let { vacina_id, dose, aplicador } = req.body;
+    const { vacina_id: raw_vacina_id, dose, aplicador } = req.body;
 
-    vacina_id = parseInt(vacina_id, 10);
-    dose = (dose || "").toString().trim();
-    aplicador = (aplicador || "").toString().trim();
+    const vacina_id = parseInt(raw_vacina_id, 10);
 
-    if (!vacina_id || !dose || !aplicador) {
+    // Validação mais robusta: verifica se vacina_id é um número válido e se os outros campos não estão vazios.
+    if (isNaN(vacina_id) || !dose?.trim() || !aplicador?.trim()) {
       console.log("POST /campanhas - falhou: campos obrigatórios faltando");
-      return res.status(400).json({ error: "Todos os campos obrigatórios devem ser preenchidos." });
+      return res.status(400).json({ error: "Campos 'vacina_id', 'dose' e 'aplicador' são obrigatórios e devem ser válidos." });
     }
 
     const dataISO = new Date().toISOString().split("T")[0];
 
-    console.log("Verificando campanhas existentes em:", formatDateOnlyBR(dataISO));
+    console.log(`Verificando campanhas existentes para '${aplicador.trim()}' em: ${dataISO}`);
 
     const { data: existente, error: selectError } = await supabase
       .from("campanhas")
       .select("*")
       .eq("data", dataISO)
-      .ilike("aplicador", aplicador)
-      .eq("encerrada", false);
+      .ilike("aplicador", aplicador.trim());
 
     if (selectError) {
       console.error("Erro select existente:", selectError);
@@ -66,7 +38,7 @@ router.post("/", async (req, res) => {
     }
 
     if (existente && existente.length > 0) {
-      console.log("Campanha já existente hoje:", existente.map(formatCampanha));
+      console.log("Campanha já existente hoje:", existente);
       return res.status(400).json({
         error: "⚠️ Já existe um QR Code gerado para hoje. Contate o suporte para desbloqueio."
       });
@@ -76,7 +48,7 @@ router.post("/", async (req, res) => {
       vacina_id,
       dose,
       data: dataISO,
-      aplicador,
+      aplicador: aplicador.trim(),
       encerrada: false,
       criado_em: new Date().toISOString()
     };
@@ -96,8 +68,8 @@ router.post("/", async (req, res) => {
       return res.status(500).json({ error: insertError.message });
     }
 
-    console.log("Nova campanha criada com sucesso:", formatCampanha(nova[0]));
-    return res.status(201).json({ campanha: formatCampanha(nova[0]) });
+    console.log("Nova campanha criada com sucesso:", nova[0]);
+    return res.status(201).json({ campanha: nova[0] });
   } catch (err) {
     console.error("ERRO AO CRIAR CAMPANHA:", err);
     return res.status(500).json({ error: "Erro ao criar campanha." });
@@ -121,12 +93,11 @@ router.get("/hoje", async (req, res) => {
       .from("campanhas")
       .select("*, vacinas(nome, fabricante)")
       .eq("data", hojeISO)
-      .ilike("aplicador", aplicador)
-      .eq("encerrada", false);
+      .ilike("aplicador", aplicador);
 
     if (error) return res.status(500).json({ error: error.message });
 
-    res.json({ existe: campanhas && campanhas.length > 0, campanhas: campanhas.map(formatCampanha) });
+    res.json({ existe: campanhas && campanhas.length > 0, campanhas: campanhas });
   } catch (err) {
     console.error("Erro ao verificar campanha de hoje:", err);
     res.status(500).json({ error: "Erro ao verificar campanha de hoje." });
@@ -144,7 +115,7 @@ router.get("/", async (req, res) => {
 
     if (error) return res.status(500).json({ error: error.message });
     console.log(`GET /campanhas - ${campanhas.length} campanhas retornadas`);
-    res.json(campanhas.map(formatCampanha));
+    res.json(campanhas);
   } catch (err) {
     console.error("Erro ao buscar campanhas:", err);
     res.status(500).json({ error: "Erro ao buscar campanhas." });
@@ -167,8 +138,8 @@ router.get("/:id", async (req, res) => {
       console.log("GET /campanhas/:id - não encontrada:", id);
       return res.status(404).json({ error: "Campanha não encontrada." });
     }
-    console.log("GET /campanhas/:id - encontrada:", formatCampanha(campanha));
-    res.json(formatCampanha(campanha));
+    console.log("GET /campanhas/:id - encontrada:", campanha);
+    res.json(campanha);
   } catch (err) {
     console.error("Erro ao buscar campanha:", err);
     res.status(500).json({ error: "Erro ao buscar campanha." });
@@ -206,10 +177,10 @@ router.delete("/:id", async (req, res) => {
     if (error) return res.status(500).json({ error: error.message });
     if (!updated || updated.length === 0) return res.status(404).json({ error: "Campanha não encontrada." });
 
-    console.log(`Campanha deletada pelo admin "${adminName}":`, formatCampanha(updated[0]));
+    console.log(`Campanha deletada pelo admin "${adminName}":`, updated[0]);
     return res.json({
       message: "Campanha marcada como deletada (soft-delete).",
-      campanha: formatCampanha(updated[0])
+      campanha: updated[0]
     });
   } catch (err) {
     console.error("Erro ao deletar campanha:", err);
@@ -231,10 +202,10 @@ router.post("/:id/encerrar", async (req, res) => {
       .select("*, vacinas(nome, fabricante)");
 
     if (error) return res.status(500).json({ error: error.message });
-    console.log("Campanha encerrada:", formatCampanha(updated && updated[0]));
+    console.log("Campanha encerrada:", updated && updated[0]);
     res.status(200).json({
       message: "Campanha encerrada com sucesso.",
-      campanha: formatCampanha(updated && updated[0])
+      campanha: updated && updated[0]
     });
   } catch (err) {
     console.error("Erro ao encerrar campanha:", err);

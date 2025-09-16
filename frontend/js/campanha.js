@@ -3,6 +3,7 @@ let dadosTemporarios = {};
 const vacinaSelect = document.getElementById("vacina");
 const fabricanteInput = document.getElementById("fabricante");
 const mensagemErroDiv = document.getElementById("mensagem-erro");
+const aplicadorInput = document.getElementById("aplicador");
 const btnGerar = document.getElementById("btn-gerar");
 
 // Carregar vacinas do backend
@@ -32,11 +33,47 @@ vacinaSelect.addEventListener("change", () => {
   fabricanteInput.value = fabricante;
 });
 
+// Função para exibir o QR Code
+function exibirQRCode(campanha) {
+  dadosTemporarios = campanha;
+  document.getElementById("formulario").style.display = "none";
+  document.getElementById("qrcode-container").style.display = "block";
+
+  document.getElementById("qrcode").innerHTML = "";
+  new QRCode(document.getElementById("qrcode"), {
+    text: `http://localhost:3000/campanhas/${campanha.id}`,
+    width: document.getElementById("qrcode").clientWidth,
+    height: document.getElementById("qrcode").clientWidth,
+  });
+
+  mensagemErroDiv.style.display = "none";
+}
+
+// Verifica se já existe campanha para o aplicador ao sair do campo
+aplicadorInput.addEventListener("blur", async () => {
+  const aplicador = aplicadorInput.value.trim();
+  if (!aplicador) return;
+
+  try {
+    const response = await fetch(`http://localhost:3000/campanhas/hoje?aplicador=${encodeURIComponent(aplicador)}`);
+    const result = await response.json();
+
+    if (result.existe && result.campanhas.length > 0) {
+      alert("Já existe uma campanha ativa para este aplicador hoje. Exibindo o QR Code existente.");
+      exibirQRCode(result.campanhas[0]);
+    }
+  } catch (err) {
+    console.error("Erro ao verificar campanha existente:", err);
+    // Não bloqueia o fluxo, apenas loga o erro
+  }
+});
+
+
 // Gerar QR Code
 btnGerar.addEventListener("click", async () => {
   const vacina_id = vacinaSelect.value;
   const dose = document.getElementById("dose").value.trim();
-  const aplicador = document.getElementById("aplicador").value.trim();
+  const aplicador = aplicadorInput.value.trim();
 
   if (!vacina_id || !dose || !aplicador) {
     mensagemErroDiv.style.display = "block";
@@ -60,18 +97,7 @@ btnGerar.addEventListener("click", async () => {
       return;
     }
 
-    dadosTemporarios = result.campanha;
-    document.getElementById("formulario").style.display = "none";
-    document.getElementById("qrcode-container").style.display = "block";
-
-    document.getElementById("qrcode").innerHTML = "";
-    new QRCode(document.getElementById("qrcode"), {
-      text: `http://localhost:3000/campanhas/${dadosTemporarios.id}`,
-      width: document.getElementById("qrcode").clientWidth,
-      height: document.getElementById("qrcode").clientWidth,
-    });
-
-    mensagemErroDiv.style.display = "none";
+    exibirQRCode(result.campanha);
   } catch (err) {
     console.error("Erro:", err);
     mensagemErroDiv.style.display = "block";

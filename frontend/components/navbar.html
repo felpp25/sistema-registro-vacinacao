@@ -1,10 +1,31 @@
-<!-- Navbar -->
-<nav class="navbar">
-  <div class="navbar-left">
-    <img src="frontend/logo.png" alt="Logo" class="logo">
-  </div>
-  <div class="navbar-right">
-    <button class="btn">Suporte</button>
-    <button class="btn">Sair</button>
+<nav class="fixed top-0 left-0 w-full bg-blue-900 text-white shadow-md z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16 items-center">
+
+      <!-- Logo -->
+      <div class="flex-shrink-0">
+        <img src="frontend/logo.png" alt="Logo" class="h-10">
+      </div>
+
+      <!-- Botões -->
+      <div class="flex space-x-3">
+        <!-- Suporte (sempre visível) -->
+        <a href="https://wa.me/5511999999999?text=Olá!" target="_blank"
+           class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition">
+          Suporte
+        </a>
+
+        <!-- Botões dinâmicos -->
+        <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition hidden">
+          Sair
+        </button>
+        <a href="register.html" id="registerBtn" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition hidden">
+          Registrar
+        </a>
+        <a href="login.html" id="loginBtn" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg transition hidden">
+          Login
+        </a>
+      </div>
+    </div>
   </div>
 </nav>

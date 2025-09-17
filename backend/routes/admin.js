@@ -23,7 +23,7 @@ router.post("/register", async (req, res) => {
       .from("administrador")
       .select("email")
       .eq("email", email)
-      .single();
+      .maybeSingle();
 
     if (selectError) throw selectError;
     if (existente) {

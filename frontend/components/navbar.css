@@ -5,18 +5,19 @@
   box-sizing: border-box;
 }
 
-body {
-  font-family: Arial, sans-serif;
-}
-
 /* Navbar */
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: #1e3a8a;
   padding: 10px 20px;
   color: white;
+  z-index: 1000;
 }
 
 .navbar .logo {

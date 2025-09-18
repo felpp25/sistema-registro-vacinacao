@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menu Inicial - Carteira de Vacinação</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 font-sans">
+    <!-- Navbar fixa -->
+    <div id="navbar-container"></div>
+
+    <!-- Menu principal -->
+    <div class="flex flex-col items-center justify-center mt-32 gap-8 px-4">
+
+  <!-- Buscar / Registrar -->
+  <button
+    id="buscarRegistrarBtn"
+    class="w-full max-w-2xl bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold text-2xl px-12 py-6 rounded-3xl shadow-xl flex items-center justify-center gap-5 hover:from-blue-600 hover:to-blue-800 transition duration-300"
+  >
+    <img src="./assets/pesquisa.png" alt="Buscar" class="h-10 w-10" />
+    Buscar / Registrar
+  </button>
+
+  <!-- Nova Campanha -->
+  <button
+    onclick="window.location.href='campanha.html'"
+    class="w-full max-w-2xl bg-gradient-to-r from-blue-400 to-blue-600 text-white font-bold text-2xl px-12 py-6 rounded-3xl shadow-xl flex items-center justify-center gap-5 hover:from-blue-500 hover:to-blue-700 transition duration-300"
+  >
+    <img src="./assets/campanha.png" alt="Campanha" class="h-10 w-10" />
+    Nova Campanha
+  </button>
+
+</div>
+
+
+    <!-- Modal Buscar -->
+    <div
+      id="modalBuscar"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50"
+    >
+      <div class="bg-white p-6 rounded-2xl shadow-xl relative w-11/12 max-w-md">
+        <span
+          id="closeModal"
+          class="absolute top-3 right-4 cursor-pointer text-gray-500 text-3xl hover:text-gray-700 transition"
+          >&times;</span
+        >
+        <h2 class="text-2xl font-bold mb-4 text-center">Buscar Usuário</h2>
+        <input
+          type="text"
+          id="cartaoInput"
+          placeholder="Digite o número do cartão de vacinação"
+          class="w-full border border-gray-300 rounded-lg p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <button
+          id="buscarBtn"
+          class="w-full bg-blue-600 text-white py-3 rounded-lg shadow hover:bg-blue-700 transition duration-300 font-semibold"
+        >
+          Buscar
+        </button>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="./js/menu.js"></script>
+    <script src="./components/navbar.js"></script>
+  </body>
+</html>

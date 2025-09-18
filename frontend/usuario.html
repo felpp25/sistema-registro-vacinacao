@@ -1,87 +1,118 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Cartão de Vacinação</title>
-    <link rel="stylesheet" href="./css/usuario.css" />
-    <link rel="stylesheet" href="./components/navbar.css" />
-  </head>
-  <body>
-    <!-- navbar -->
-    <div id="navbar-container"></div>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Cartão de Vacinação - Carteira Digital</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
 
-    <!-- Conteúdo do usuário -->
-    <div class="container">
-      <div class="perfil">
-        <header>
-          <img id="avatar" class="avatar" alt="Foto de perfil" />
-          <div class="info">
-            <p>Olá,</p>
-            <h2 id="nome">[nome]</h2>
-          </div>
-        </header>
+<!-- Navbar -->
+<div id="navbar-container"></div>
 
-        <section id="dadosPessoais">
-          <h3>Dados pessoais</h3>
-          <p>
-            <strong>Data de nascimento:</strong> <span id="nascimento">—</span>
-          </p>
-          <p><strong>Sexo:</strong> <span id="sexo">—</span></p>
-          <p>
-            <strong>Código de vacinação:</strong> <span id="cartao">—</span>
-          </p>
-        </section>
+<!-- Conteúdo do usuário -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8 pt-20">
 
-        <section>
-          <h3>Vacinas pendentes ⏳</h3>
-          <div id="pendentesList"></div>
-        </section>
-
-        <section>
-          <h3>Vacinas concluídas ✅</h3>
-          <div id="concluidasList"></div>
-        </section>
-      </div>
-
-      <div class="formulario">
-        <h3>Registrar nova vacina</h3>
-        <form id="vacinaForm">
-          <label>Vacina:</label>
-          <select id="vacinaSelect" required>
-            <option value="">Carregando vacinas...</option>
-          </select>
-          <input
-            type="text"
-            id="fabricanteInput"
-            placeholder="Fabricante"
-            readonly
-          />
-
-          <label>Tipo da dose (1ª, 2ª, Única, etc):</label>
-          <input type="text" id="doseTipo" required />
-
-          <label>Data de aplicação:</label>
-          <input type="date" id="dataAplicacao" required />
-
-          <label>Lote:</label>
-          <input type="text" id="lote" />
-
-          <label>Próxima aplicação (se houver):</label>
-          <input type="date" id="proxAplicacao" />
-
-          <label>Posto de vacinação:</label>
-          <select id="posto">
-            <option value="">Carregando postos...</option>
-          </select>
-
-          <button type="submit" class="btn">Salvar vacina</button>
-        </form>
-        <div id="error" class="error"></div>
+  <!-- Perfil e vacinas -->
+  <div class="lg:col-span-2 space-y-6">
+    
+    <!-- Card Perfil -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 flex items-center gap-6">
+      <img id="avatar" class="h-20 w-20 rounded-full object-cover" alt="Foto de perfil" />
+      <div>
+        <p class="text-gray-500">Olá,</p>
+        <h2 id="nome" class="text-2xl font-bold text-gray-800">[nome]</h2>
       </div>
     </div>
 
-    <script src="./js/usuario.js"></script>
-    <script src="./components/navbar.js"></script>
-  </body>
+    <!-- Dados Pessoais -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 space-y-2">
+      <h3 class="text-lg font-semibold text-gray-700 mb-2">Dados pessoais</h3>
+      <p><strong>Data de nascimento:</strong> <span id="nascimento">—</span></p>
+      <p><strong>Sexo:</strong> <span id="sexo">—</span></p>
+      <p><strong>Código de vacinação:</strong> <span id="cartao">—</span></p>
+    </div>
+
+    <!-- Vacinas Pendentes -->
+    <div class="bg-white rounded-2xl shadow-lg p-6">
+      <h3 class="text-lg font-semibold text-gray-700 mb-2">Vacinas pendentes ⏳</h3>
+      <div id="pendentesList" class="space-y-2"></div>
+    </div>
+
+    <!-- Vacinas Concluídas -->
+    <div class="bg-white rounded-2xl shadow-lg p-6">
+      <h3 class="text-lg font-semibold text-gray-700 mb-2">Vacinas concluídas ✅</h3>
+      <div id="concluidasList" class="space-y-2"></div>
+    </div>
+
+  </div>
+
+  <!-- Formulário de registro de vacina -->
+  <div class="bg-white rounded-2xl shadow-lg p-6 self-start">
+    <h3 class="text-xl font-semibold text-gray-800 mb-4">Registrar nova vacina</h3>
+    <form id="vacinaForm" class="space-y-4">
+
+      <div class="flex flex-col">
+        <label class="text-gray-600 mb-1">Vacina:</label>
+        <select id="vacinaSelect" required
+                class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="">Carregando vacinas...</option>
+        </select>
+      </div>
+
+      <div class="flex flex-col">
+        <label class="text-gray-600 mb-1">Fabricante:</label>
+        <input type="text" id="fabricanteInput" readonly
+               class="border border-gray-300 rounded-lg px-3 py-2 bg-gray-100 cursor-not-allowed">
+      </div>
+
+      <div class="flex flex-col">
+        <label class="text-gray-600 mb-1">Tipo da dose:</label>
+        <input type="text" id="doseTipo" required
+               class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+               placeholder="1ª, 2ª, Única, etc">
+      </div>
+
+      <div class="flex flex-col">
+        <label class="text-gray-600 mb-1">Data de aplicação:</label>
+        <input type="date" id="dataAplicacao" required
+               class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+
+      <div class="flex flex-col">
+        <label class="text-gray-600 mb-1">Lote:</label>
+        <input type="text" id="lote"
+               class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+
+      <div class="flex flex-col">
+        <label class="text-gray-600 mb-1">Próxima aplicação:</label>
+        <input type="date" id="proxAplicacao"
+               class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+
+      <div class="flex flex-col">
+        <label class="text-gray-600 mb-1">Posto de vacinação:</label>
+        <select id="posto"
+                class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="">Carregando postos...</option>
+        </select>
+      </div>
+
+      <button type="submit"
+              class="mt-4 w-full bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold py-3 rounded-2xl shadow-lg hover:from-blue-600 hover:to-blue-800 transition duration-300">
+        Salvar vacina
+      </button>
+    </form>
+    <p id="error" class="mt-2 text-red-500 text-sm"></p>
+  </div>
+
+</div>
+
+<script src="./js/usuario.js"></script>
+<script src="./components/navbar.js"></script>
+
+</body>
 </html>

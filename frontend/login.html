@@ -4,19 +4,67 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login - Carteira de Vacinação</title>
-<link rel="stylesheet" href="./css/login.css"> 
-<link rel="stylesheet" href="./components/navbar.css">
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body data-page="login">
-<div id="navbar-container"></div>
+<body class="bg-gray-100 font-sans">
 
-<div class="login-container">
-  <h2>Login</h2>
-  <input type="email" id="email" placeholder="Email" required>
-  <input type="password" id="senha" placeholder="Senha" required>
-  <button id="loginBtn">Entrar</button>
-  <p class="error" id="errorMsg"></p>
+<!-- Navbar -->
+
+<!-- Container do Login -->
+<div class="flex items-center justify-center min-h-screen pt-20 px-4">
+  <div class="bg-white shadow-xl rounded-2xl p-10 w-full max-w-md">
+    <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Login</h2>
+    
+    <!-- Inputs -->
+    <div class="flex flex-col gap-4">
+      <input type="email" id="email" placeholder="Email"
+             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+      
+      <!-- Input senha com olhinho -->
+      <div class="relative">
+        <input type="password" id="senha" placeholder="Senha"
+               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-12">
+        <button type="button" id="toggleSenha"
+                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
+          🙈
+        </button>
+      </div>
+    </div>
+
+    <!-- Botão Entrar -->
+    <button id="loginBtn"
+            class="mt-6 w-full bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold py-3 rounded-2xl shadow-lg hover:from-blue-600 hover:to-blue-800 transition duration-300 flex items-center justify-center gap-2">
+      <img src="./assets/login.png" alt="Login" class="h-6 w-6" />
+      Entrar
+    </button>
+
+    <!-- Mensagem de erro -->
+    <p id="errorMsg" class="mt-4 text-red-500 text-sm text-center"></p>
+
+    <!-- Links adicionais -->
+    <div class="mt-6 flex justify-between text-sm text-gray-500">
+      <a href="register.html" class="hover:text-blue-500 transition">Registrar</a>
+      <a href="recuperar.html" class="hover:text-blue-500 transition">Esqueci a senha</a>
+    </div>
+  </div>
 </div>
+
+<script>
+  // Mostrar/Esconder senha
+  const senhaInput = document.getElementById('senha');
+  const toggleSenha = document.getElementById('toggleSenha');
+
+  toggleSenha.addEventListener('click', () => {
+    if (senhaInput.type === 'password') {
+      senhaInput.type = 'text';
+      toggleSenha.textContent = '🙉';
+    } else {
+      senhaInput.type = 'password';
+      toggleSenha.textContent = '🙈';
+    }
+  });
+</script>
 
 <script src="./js/login.js"></script>
 <script src="./components/navbar.js"></script>

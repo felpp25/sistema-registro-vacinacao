@@ -1,28 +1,39 @@
-<nav class="fixed top-0 left-0 w-full bg-blue-900 text-white shadow-md z-50">
+<!-- Navbar -->
+<nav class="fixed top-0 left-0 w-full bg-white/80 backdrop-blur-md shadow-md z-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between h-16 items-center">
-
+      
       <!-- Logo -->
       <div class="flex-shrink-0">
-        <img src="frontend/logo.png" alt="Logo" class="h-10">
+        <img src="./assets/logo.png" alt="Logo" class="h-10">
       </div>
 
       <!-- Botões -->
-      <div class="flex space-x-3">
-        <!-- Suporte (sempre visível) -->
+      <div class="flex space-x-2">
+        <!-- Suporte -->
+        <a href="index.html" id="inicioBtn"
+           class="bg-gradient-to-r from-purple-400 to-purple-600 text-white px-4 py-2 rounded-lg shadow-md hover:from-purple-500 hover:to-purple-700 transition">
+          Inicio
+        </a>
+
         <a href="https://wa.me/5511999999999?text=Olá!" target="_blank"
-           class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition">
+           class="bg-gradient-to-r from-blue-400 to-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:from-blue-500 hover:to-blue-700 transition">
           Suporte
         </a>
 
         <!-- Botões dinâmicos -->
-        <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition hidden">
+        <button id="logoutBtn"
+           class="bg-gradient-to-r from-red-400 to-red-600 text-white px-4 py-2 rounded-lg shadow-md hover:from-red-500 hover:to-red-700 transition hidden">
           Sair
         </button>
-        <a href="register.html" id="registerBtn" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition hidden">
+
+        <a href="register.html" id="registerBtn"
+           class="bg-gradient-to-r from-green-400 to-green-600 text-white px-4 py-2 rounded-lg shadow-md hover:from-green-500 hover:to-green-700 transition hidden">
           Registrar
         </a>
-        <a href="login.html" id="loginBtn" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg transition hidden">
+
+        <a href="login.html" id="loginBtn"
+           class="bg-gradient-to-r from-yellow-400 to-yellow-500 text-white px-4 py-2 rounded-lg shadow-md hover:from-yellow-500 hover:to-yellow-600 transition hidden">
           Login
         </a>
       </div>

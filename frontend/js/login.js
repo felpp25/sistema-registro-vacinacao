@@ -1,6 +1,8 @@
 const loginBtn = document.getElementById("loginBtn");
 const errorMsg = document.getElementById("errorMsg");
 
+
+
 loginBtn.addEventListener("click", async () => {
   const email = document.getElementById("email").value.trim();
   const senha = document.getElementById("senha").value.trim();

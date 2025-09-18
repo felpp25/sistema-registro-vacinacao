@@ -1,10 +1,11 @@
 import express from "express";
 import { supabase } from "../db.js";
+import { authMiddleware } from "../middleware/auth.js";
 
 const router = express.Router();
 
 // Rota para listar todos os postos
-router.get("/lista", async (req, res) => {
+router.get("/lista", authMiddleware, async (req, res) => {
   try {
     const { data: postos, error } = await supabase
       .from("postos_vacinacao")

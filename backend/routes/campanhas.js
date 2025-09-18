@@ -1,5 +1,6 @@
 import express from "express";
 import { supabase } from "../db.js";
+import { authMiddleware } from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -8,7 +9,7 @@ const router = express.Router();
 /**
  * CREATE - Criar nova campanha
  */
-router.post("/", async (req, res) => {
+router.post("/", authMiddleware, async (req, res) => {
   try {
     console.log("POST /campanhas - corpo recebido:", req.body);
 
@@ -79,7 +80,7 @@ router.post("/", async (req, res) => {
 /**
  * Verifica se já existe campanha hoje para um aplicador
  */
-router.get("/hoje", async (req, res) => {
+router.get("/hoje", authMiddleware, async (req, res) => {
   const { aplicador } = req.query;
 
   if (!aplicador) {
@@ -191,7 +192,7 @@ router.delete("/:id", async (req, res) => {
 /**
  * Encerrar campanha
  */
-router.post("/:id/encerrar", async (req, res) => {
+router.post("/:id/encerrar", authMiddleware,  async (req, res) => {
   const { id } = req.params;
 
   try {

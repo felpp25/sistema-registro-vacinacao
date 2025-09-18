@@ -1,10 +1,12 @@
 import express from "express";
 import { supabase } from "../db.js";
+import { authMiddleware } from "../middleware/auth.js";
+
 
 const router = express.Router();
 
 // Registrar nova vacina para um usuário
-router.post("/", async (req, res) => {
+router.post("/", authMiddleware, async (req, res) => {
   try {
     const {
       cartao_vacina,

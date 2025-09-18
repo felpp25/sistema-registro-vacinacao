@@ -1,10 +1,12 @@
 import express from "express";
 import { supabase } from "../db.js";
+import { authMiddleware } from "../middleware/auth.js";
+
 
 const router = express.Router();
 
 // Buscar usuário pelo número do cartão de vacina
-router.get("/:cartao_vacina", async (req, res) => {
+router.get("/:cartao_vacina", authMiddleware, async (req, res) => {
   try {
     const { cartao_vacina } = req.params;
 

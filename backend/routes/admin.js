@@ -74,11 +74,11 @@ router.post("/login", async (req, res) => {
 });
 
 /**
- * Rota protegida de exemplo
- */
-router.get("/dashboard", authMiddleware, async (req, res) => {
-  res.json({ message: `Bem-vindo ${req.user.nome}`, user: req.user });
-});
+//  * Rota protegida de exemplo
+//  */
+// router.get("/dashboard", authMiddleware, async (req, res) => {
+//   res.json({ message: `Bem-vindo ${req.user.nome}`, user: req.user });
+// });
 
 /**
  * POST /admin/recuperar-senha

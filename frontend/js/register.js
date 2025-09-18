@@ -11,8 +11,15 @@ registerBtn.addEventListener("click", async () => {
   messageDiv.textContent = "";
   errorDiv.textContent = "";
 
+  // Validação de campos
   if (!nome || !email || !senha) {
     errorDiv.textContent = "Preencha todos os campos.";
+    return;
+  }
+
+  // Validação de senha mínima
+  if (senha.length < 8) {
+    errorDiv.textContent = "A senha precisa ter no mínimo 8 caracteres.";
     return;
   }
 

@@ -1,6 +1,12 @@
 const BASE = "http://localhost:3000";
+const token = localStorage.getItem("token");
 const cartaoVacina =
   new URLSearchParams(window.location.search).get("cartao_vacina") || "";
+
+// Redireciona para login se não houver token
+if (!token) {
+  window.location.href = "login.html";
+}
 
 const vacinaSelect = document.getElementById("vacinaSelect");
 const fabricanteInput = document.getElementById("fabricanteInput");
@@ -15,26 +21,37 @@ function formatarData(dataStr) {
   return new Date(ano, mes - 1, dia).toLocaleDateString("pt-BR");
 }
 
+// Helper para fetch com token
+async function fetchAuth(url, options = {}) {
+  options.headers = {
+    ...options.headers,
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  const res = await fetch(url, options);
+  if (!res.ok) {
+    const errText = await res.text();
+    throw new Error(errText || "Erro na requisição");
+  }
+  return res.json();
+}
+
 // Carregar vacinas
 async function carregarVacinas() {
   try {
-    const res = await fetch(`${BASE}/vacinas`);
-    const vacinas = await res.json();
+    const vacinas = await fetchAuth(`${BASE}/vacinas`);
     vacinaSelect.innerHTML = '<option value="">Selecione a vacina</option>';
     vacinas.forEach((v) => {
       const option = document.createElement("option");
       option.value = v.id;
-      option.textContent = `${v.nome}${
-        v.fabricante ? " (" + v.fabricante + ")" : ""
-      }`;
+      option.textContent = `${v.nome}${v.fabricante ? " (" + v.fabricante + ")" : ""}`;
       option.dataset.fabricante = v.fabricante || "";
       vacinaSelect.appendChild(option);
     });
-    //console.log('Vacinas carregadas:', vacinas);
   } catch (err) {
     console.error("Erro ao carregar vacinas:", err);
-    vacinaSelect.innerHTML =
-      '<option value="">Erro ao carregar vacinas</option>';
+    vacinaSelect.innerHTML = '<option value="">Erro ao carregar vacinas</option>';
+    mensagemErroDiv.textContent = "Erro ao carregar vacinas do servidor.";
   }
 }
 
@@ -46,9 +63,7 @@ vacinaSelect.addEventListener("change", () => {
 // Carregar postos
 async function carregarPostos() {
   try {
-    const res = await fetch(`${BASE}/postos/lista`);
-    if (!res.ok) throw new Error("Falha ao carregar postos");
-    const postos = await res.json();
+    const postos = await fetchAuth(`${BASE}/postos/lista`);
     selectPosto.innerHTML = '<option value="">Selecione o posto</option>';
     postos.forEach((p) => {
       const option = document.createElement("option");
@@ -56,10 +71,10 @@ async function carregarPostos() {
       option.textContent = p.nome;
       selectPosto.appendChild(option);
     });
-    //console.log('Postos carregados:', postos);
   } catch (err) {
     console.error("Erro ao listar postos:", err);
     selectPosto.innerHTML = '<option value="">Erro ao carregar postos</option>';
+    mensagemErroDiv.textContent = "Erro ao carregar postos do servidor.";
   }
 }
 
@@ -67,15 +82,9 @@ async function carregarPostos() {
 async function carregarUsuario() {
   if (!cartaoVacina) return;
   try {
-    console.log("Buscando usuário com cartao_vacina:", cartaoVacina);
-    const res = await fetch(`${BASE}/usuarios/${cartaoVacina}`);
-    if (!res.ok) throw new Error("Usuário não encontrado");
-    const data = await res.json();
-    console.log("Usuário carregado:", data);
-
+    const data = await fetchAuth(`${BASE}/usuarios/${cartaoVacina}`);
     const usuario = data.usuario || data;
 
-    // Atualizar campos
     document.getElementById("nome").textContent = usuario.nome || "-";
     document.getElementById("nascimento").textContent = usuario.data_nascimento
       ? formatarData(usuario.data_nascimento)
@@ -84,7 +93,6 @@ async function carregarUsuario() {
     document.getElementById("cartao").textContent =
       usuario.cartao_vacina || cartaoVacina;
 
-    // Foto de perfil com fallback
     const avatarEl = document.getElementById("avatar");
     avatarEl.src =
       usuario.foto_perfil_url || "https://via.placeholder.com/64?text=Perfil";
@@ -104,6 +112,7 @@ async function carregarUsuario() {
         doseLower.includes("1ª") ||
         doseLower.includes("retorno") ||
         doseLower.includes("pendente");
+
       card.className = isPendente ? "pendente-card" : "vacina-card";
       card.innerHTML = `
         <h4>${v.vacinas?.nome || "-"} (${v.dose_tipo || "-"})</h4>
@@ -116,7 +125,7 @@ async function carregarUsuario() {
     });
   } catch (err) {
     console.error("Erro carregarUsuario:", err);
-    mensagemErroDiv.textContent = err.message;
+    mensagemErroDiv.textContent = err.message || "Erro ao carregar usuário";
   }
 }
 
@@ -137,18 +146,10 @@ document.getElementById("vacinaForm").addEventListener("submit", async (e) => {
       campanha_id: null,
     };
 
-    // console.log('Payload para registrar vacina:', payload);
-
-    const res = await fetch(`${BASE}/usuariosregistrar`, {
+    await fetchAuth(`${BASE}/usuariosregistrar`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
-
-    if (!res.ok) {
-      const errText = await res.text();
-      throw new Error(errText);
-    }
 
     e.target.reset();
     await carregarUsuario();

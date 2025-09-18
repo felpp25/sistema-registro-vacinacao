@@ -108,7 +108,7 @@ router.get("/hoje", authMiddleware, async (req, res) => {
 /**
  * READ - Listar todas as campanhas
  */
-router.get("/", async (req, res) => {
+router.get("/", authMiddleware, async (req, res) => {
   try {
     const { data: campanhas, error } = await supabase
       .from("campanhas")
@@ -126,7 +126,7 @@ router.get("/", async (req, res) => {
 /**
  * READ - Buscar campanha por ID
  */
-router.get("/:id", async (req, res) => {
+router.get("/:id", authMiddleware, async (req, res) => {
   const { id } = req.params;
   try {
     const { data: campanha, error } = await supabase

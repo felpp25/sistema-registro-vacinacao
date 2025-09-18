@@ -1,4 +1,10 @@
 let dadosTemporarios = {};
+const token = localStorage.getItem("token");
+
+// Redireciona para login se não houver token
+if (!token) {
+  window.location.href = "login.html";
+}
 
 const vacinaSelect = document.getElementById("vacina");
 const fabricanteInput = document.getElementById("fabricante");
@@ -6,16 +12,30 @@ const mensagemErroDiv = document.getElementById("mensagem-erro");
 const aplicadorInput = document.getElementById("aplicador");
 const btnGerar = document.getElementById("btn-gerar");
 
+// Helper fetch com token
+async function fetchAuth(url, options = {}) {
+  options.headers = {
+    ...options.headers,
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  const res = await fetch(url, options);
+  if (!res.ok) {
+    const errText = await res.text();
+    throw new Error(errText || "Erro na requisição");
+  }
+  return res.json();
+}
+
 // Carregar vacinas do backend
 async function carregarVacinas() {
   try {
-    const res = await fetch("http://localhost:3000/vacinas");
-    const vacinas = await res.json();
+    const vacinas = await fetchAuth("http://localhost:3000/vacinas");
 
     vacinaSelect.innerHTML = '<option value="">Selecione a vacina</option>';
     vacinas.forEach((v) => {
       const option = document.createElement("option");
-      option.value = v.id; // envia o id da vacina
+      option.value = v.id;
       option.text = `${v.nome} (${v.fabricante})`;
       option.dataset.fabricante = v.fabricante;
       vacinaSelect.appendChild(option);
@@ -33,7 +53,7 @@ vacinaSelect.addEventListener("change", () => {
   fabricanteInput.value = fabricante;
 });
 
-// Função para exibir o QR Code
+// Exibir QR Code
 function exibirQRCode(campanha) {
   dadosTemporarios = campanha;
   document.getElementById("formulario").style.display = "none";
@@ -49,14 +69,15 @@ function exibirQRCode(campanha) {
   mensagemErroDiv.style.display = "none";
 }
 
-// Verifica se já existe campanha para o aplicador ao sair do campo
+// Verifica se já existe campanha para o aplicador
 aplicadorInput.addEventListener("blur", async () => {
   const aplicador = aplicadorInput.value.trim();
   if (!aplicador) return;
 
   try {
-    const response = await fetch(`http://localhost:3000/campanhas/hoje?aplicador=${encodeURIComponent(aplicador)}`);
-    const result = await response.json();
+    const result = await fetchAuth(
+      `http://localhost:3000/campanhas/hoje?aplicador=${encodeURIComponent(aplicador)}`
+    );
 
     if (result.existe && result.campanhas.length > 0) {
       alert("Já existe uma campanha ativa para este aplicador hoje. Exibindo o QR Code existente.");
@@ -64,10 +85,8 @@ aplicadorInput.addEventListener("blur", async () => {
     }
   } catch (err) {
     console.error("Erro ao verificar campanha existente:", err);
-    // Não bloqueia o fluxo, apenas loga o erro
   }
 });
-
 
 // Gerar QR Code
 btnGerar.addEventListener("click", async () => {
@@ -77,25 +96,15 @@ btnGerar.addEventListener("click", async () => {
 
   if (!vacina_id || !dose || !aplicador) {
     mensagemErroDiv.style.display = "block";
-    mensagemErroDiv.innerText =
-      "Preencha todos os campos antes de gerar o QR Code.";
+    mensagemErroDiv.innerText = "Preencha todos os campos antes de gerar o QR Code.";
     return;
   }
 
   try {
-    const response = await fetch("http://localhost:3000/campanhas", {
+    const result = await fetchAuth("http://localhost:3000/campanhas", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ vacina_id, dose, aplicador }),
     });
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      mensagemErroDiv.style.display = "block";
-      mensagemErroDiv.innerText = result.error || "Erro ao criar QR Code.";
-      return;
-    }
 
     exibirQRCode(result.campanha);
   } catch (err) {
@@ -110,22 +119,13 @@ async function encerrarCampanha() {
   if (!dadosTemporarios.id) return;
 
   try {
-    const response = await fetch(
+    const result = await fetchAuth(
       `http://localhost:3000/campanhas/${dadosTemporarios.id}/encerrar`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      }
+      { method: "POST" }
     );
 
-    const result = await response.json();
-
-    if (response.ok) {
-      alert("✅ Campanha encerrada com sucesso!");
-      location.reload();
-    } else {
-      alert(result.error || "Erro ao encerrar campanha.");
-    }
+    alert("✅ Campanha encerrada com sucesso!");
+    location.reload();
   } catch (err) {
     console.error(err);
     alert("Erro ao comunicar com o servidor.");

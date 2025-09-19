@@ -21,3 +21,15 @@ router.get("/lista", authMiddleware, async (req, res) => {
 });
 
 export default router;
+
+
+// import express from "express";
+// import postosController from "../controllers/postos.controller.js";
+// import { authMiddleware } from "../middleware/auth.js";
+
+// const router = express.Router();
+
+// // Listar todos os postos (rota protegida)
+// router.get("/lista", authMiddleware, postosController.listar);
+
+// export default router;

@@ -17,8 +17,15 @@ import adminRoutes from "./routes/admin.js";
 import usuarioRoutes from "./routes/usuariosBuscar.js";
 import vacinasRoutes from "./routes/vacinas.js";
 import usuarioRegistrarRoutes from "./routes/usuarioRegistrar.js";
-import usuarioVacinasRoutes from "./routes/usuarioVacinas.js";
 import postosRoutes from "./routes/postos.js";
+
+// import adminRoutes from "./routes/admin.routes.js";
+// import campanhaRoutes from "./routes/campanhas.routes.js";
+// import postosRoutes from "./routes/postos.routes.js";
+// import usuarioRoutes from "./routes/usuariosBuscar.routes.js";
+// import usuarioRegistrarRoutes from "./routes/usuarioRegistrar.routes.js";
+// import vacinasRoutes from "./routes/vacinas.routes.js";
+
 
 
 // Importar middleware de autenticação
@@ -38,7 +45,6 @@ app.use("/admin", adminRoutes);
 app.use("/usuarios", authMiddleware, usuarioRoutes);
 app.use("/vacinas", authMiddleware, vacinasRoutes);
 app.use("/usuariosregistrar", authMiddleware, usuarioRegistrarRoutes);
-app.use("/usuariovacinas", authMiddleware, usuarioVacinasRoutes);
 app.use("/postos", authMiddleware, postosRoutes);
 
 // ===============================

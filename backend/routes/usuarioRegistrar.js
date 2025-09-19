@@ -58,7 +58,7 @@ router.post("/", authMiddleware, async (req, res) => {
           comprovante_url,
           prox_aplicacao: proxAplicacaoUTC ? proxAplicacaoUTC.toISOString().split("T")[0] : null,
           posto_id,
-          aplicador_id: aplicadorId, // 👈 vincula quem aplicou
+          aplicador_id: aplicadorId, 
         },
       ])
       .select()
@@ -75,3 +75,15 @@ router.post("/", authMiddleware, async (req, res) => {
 
 
 export default router;
+
+
+// import express from "express";
+// import { authMiddleware } from "../middleware/auth.js";
+// import usuarioRegistrarController from "../controllers/usuarioRegistrar.controller.js";
+
+// const router = express.Router();
+
+// // Registrar nova vacina (rota protegida)
+// router.post("/", authMiddleware, usuarioRegistrarController.registrar);
+
+// export default router;

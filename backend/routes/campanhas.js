@@ -202,3 +202,30 @@ router.post("/:id/encerrar", authMiddleware, async (req, res) => {
 });
 
 export default router;
+
+
+// import express from "express";
+// import campanhasController from "../controllers/campanhas.controller.js";
+// import { authMiddleware } from "../middleware/auth.js";
+
+// const router = express.Router();
+
+// // Criar campanha
+// router.post("/", authMiddleware, campanhasController.criar);
+
+// // Campanhas de hoje
+// router.get("/hoje", authMiddleware, campanhasController.campanhasHoje);
+
+// // Listar todas as campanhas
+// router.get("/", authMiddleware, campanhasController.listar);
+
+// // Buscar campanha por ID
+// router.get("/:id", authMiddleware, campanhasController.buscarPorId);
+
+// // Soft-delete de campanha (via Postman, sem authMiddleware)
+// router.delete("/:id", campanhasController.deletar);
+
+// // Encerrar campanha
+// router.post("/:id/encerrar", authMiddleware, campanhasController.encerrar);
+
+// export default router;

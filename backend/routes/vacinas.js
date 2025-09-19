@@ -47,3 +47,18 @@ router.post("/", authMiddleware, async (req, res) => {
 });
 
 export default router;
+
+
+// import express from "express";
+// import { authMiddleware } from "../middleware/auth.js";
+// import vacinasController from "../controllers/vacinas.controller.js";
+
+// const router = express.Router();
+
+// // Listar todas as vacinas (rota protegida)
+// router.get("/", authMiddleware, vacinasController.listar);
+
+// // Adicionar nova vacina (rota protegida)
+// router.post("/", authMiddleware, vacinasController.adicionar);
+
+// export default router;

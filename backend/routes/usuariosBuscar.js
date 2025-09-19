@@ -71,3 +71,15 @@ router.get("/:cartao_vacina", authMiddleware, async (req, res) => {
 });
 
 export default router;
+
+
+// import express from "express";
+// import { authMiddleware } from "../middleware/auth.js";
+// import usuariosBuscarController from "../controllers/usuariosBuscar.controller.js";
+
+// const router = express.Router();
+
+// // Buscar usuário pelo cartão de vacina (rota protegida)
+// router.get("/:cartao_vacina", authMiddleware, usuariosBuscarController.buscarPorCartao);
+
+// export default router;

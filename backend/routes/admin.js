@@ -73,12 +73,6 @@ router.post("/login", async (req, res) => {
   }
 });
 
-/**
-//  * Rota protegida de exemplo
-//  */
-// router.get("/dashboard", authMiddleware, async (req, res) => {
-//   res.json({ message: `Bem-vindo ${req.user.nome}`, user: req.user });
-// });
 
 /**
  * POST /admin/recuperar-senha
@@ -156,3 +150,23 @@ router.post("/reset-senha", async (req, res) => {
 });
 
 export default router;
+
+
+// import express from "express";
+// import adminController from "../controllers/adminController.js";
+
+// const router = express.Router();
+
+// // Registrar administrador (não precisa de auth)
+// router.post("/register", adminController.register);
+
+// // Login (não precisa de auth)
+// router.post("/login", adminController.login);
+
+// // Recuperar senha (não precisa de auth)
+// router.post("/recuperar-senha", adminController.recuperarSenha);
+
+// // Resetar senha (não precisa de auth)
+// router.post("/reset-senha", adminController.resetSenha);
+
+// export default router;

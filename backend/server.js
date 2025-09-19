@@ -38,7 +38,7 @@ app.use("/admin", adminRoutes); // registrar/login não precisa de token
 app.use("/usuarios", authMiddleware, usuarioRoutes);
 app.use("/vacinas", authMiddleware, vacinasRoutes);
 app.use("/usuariosregistrar", authMiddleware, usuarioRegistrarRoutes);
-app.use("/usuario_vacinas", authMiddleware, usuarioVacinasRoutes);
+app.use("/usuariovacinas", authMiddleware, usuarioVacinasRoutes);
 app.use("/postos", authMiddleware, postosRoutes);
 
 // ===============================

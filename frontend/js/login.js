@@ -24,8 +24,8 @@ loginBtn.addEventListener("click", async () => {
     if (response.ok) {
       // Salvar token no localStorage
       localStorage.setItem("token", data.token);
-      // Redirecionar para index.html
-      window.location.href = "index.html";
+      // Redirecionar para menu.html
+      window.location.href = "menu.html";
     } else {
       errorMsg.textContent = data.error || "Erro ao fazer login.";
     }

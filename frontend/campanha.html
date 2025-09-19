@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gerador de QR Code - Campanha</title>
   
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
@@ -14,7 +13,6 @@
   <!-- Navbar -->
   <div id="navbar-container"></div>  
 
-  <!-- Conteúdo principal -->
   <div class="max-w-4xl mx-auto mt-24 p-6 bg-white rounded-xl shadow-lg">
     <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Gerador de QR Code - Campanha</h1>
 
@@ -35,11 +33,6 @@
         <input type="text" id="dose" placeholder="1ª, 2ª, reforço..." class="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
       </div>
 
-      <div class="flex flex-col">
-        <label class="mb-1 text-gray-700 font-medium">Aplicador:</label>
-        <input type="text" id="aplicador" class="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
-      </div>
-
       <button id="btn-gerar" class="w-full py-3 mt-2 bg-blue-600 bg-opacity-80 hover:bg-opacity-100 text-white font-semibold rounded-lg transition">
         Gerar QR Code
       </button>
@@ -48,7 +41,7 @@
     </div>
 
     <!-- QR Code -->
-    <div id="qrcode-container" class="mt-8 text-center">
+    <div id="qrcode-container" class="mt-8 text-center" style="display: none;">
       <div id="qrcode" class="mx-auto mb-4"></div>
       <div class="flex justify-center gap-4">
         <button onclick="encerrarCampanha()" class="px-4 py-2 bg-red-500 bg-opacity-70 hover:bg-opacity-100 text-white rounded-lg transition">

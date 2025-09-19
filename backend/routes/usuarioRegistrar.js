@@ -6,8 +6,10 @@ import { authMiddleware } from "../middleware/auth.js";
 const router = express.Router();
 
 // Registrar nova vacina para um usuário
+// Registrar nova vacina para um usuário
 router.post("/", authMiddleware, async (req, res) => {
   try {
+    const aplicadorId = req.user.id; // 👈 ID do administrador logado
     const {
       cartao_vacina,
       vacina_id,
@@ -38,7 +40,7 @@ router.post("/", authMiddleware, async (req, res) => {
 
     const usuario_id = usuario.user_id;
 
-    // Ajustar datas para UTC para evitar o erro do "um dia a menos"
+    // Ajustar datas para UTC para evitar erro de fuso
     const dataAplicacaoUTC = new Date(data_aplicacao);
     const proxAplicacaoUTC = prox_aplicacao ? new Date(prox_aplicacao) : null;
 
@@ -50,16 +52,17 @@ router.post("/", authMiddleware, async (req, res) => {
           usuario_id,
           vacina_id,
           campanha_id,
-          data_aplicacao: dataAplicacaoUTC.toISOString().split("T")[0], // salva como YYYY-MM-DD
+          data_aplicacao: dataAplicacaoUTC.toISOString().split("T")[0],
           dose_tipo,
           lote,
           comprovante_url,
           prox_aplicacao: proxAplicacaoUTC ? proxAplicacaoUTC.toISOString().split("T")[0] : null,
-          posto_id, // já envia o ID correto do posto
+          posto_id,
+          aplicador_id: aplicadorId, // 👈 vincula quem aplicou
         },
       ])
       .select()
-      .single(); // retorna o registro inserido
+      .single();
 
     if (error) throw error;
 
@@ -69,5 +72,6 @@ router.post("/", authMiddleware, async (req, res) => {
     res.status(500).json({ error: "Erro ao registrar vacina", details: err.message });
   }
 });
+
 
 export default router;

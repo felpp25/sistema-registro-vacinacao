@@ -4,8 +4,6 @@ import { authMiddleware } from "../middleware/auth.js";
 
 const router = express.Router();
 
-
-
 /**
  * CREATE - Criar nova campanha
  */
@@ -13,33 +11,25 @@ router.post("/", authMiddleware, async (req, res) => {
   try {
     console.log("POST /campanhas - corpo recebido:", req.body);
 
-    const { vacina_id: raw_vacina_id, dose, aplicador } = req.body;
-
+    const { vacina_id: raw_vacina_id, dose } = req.body;
     const vacina_id = parseInt(raw_vacina_id, 10);
+    const aplicadorId = req.user.id;
 
-    // Validação mais robusta: verifica se vacina_id é um número válido e se os outros campos não estão vazios.
-    if (isNaN(vacina_id) || !dose?.trim() || !aplicador?.trim()) {
-      console.log("POST /campanhas - falhou: campos obrigatórios faltando");
-      return res.status(400).json({ error: "Campos 'vacina_id', 'dose' e 'aplicador' são obrigatórios e devem ser válidos." });
+    if (isNaN(vacina_id) || !dose?.trim()) {
+      return res.status(400).json({ error: "Campos 'vacina_id' e 'dose' são obrigatórios e válidos." });
     }
 
     const dataISO = new Date().toISOString().split("T")[0];
-
-    console.log(`Verificando campanhas existentes para '${aplicador.trim()}' em: ${dataISO}`);
 
     const { data: existente, error: selectError } = await supabase
       .from("campanhas")
       .select("*")
       .eq("data", dataISO)
-      .ilike("aplicador", aplicador.trim());
+      .eq("aplicador_id", aplicadorId);
 
-    if (selectError) {
-      console.error("Erro select existente:", selectError);
-      return res.status(500).json({ error: selectError.message });
-    }
+    if (selectError) return res.status(500).json({ error: selectError.message });
 
     if (existente && existente.length > 0) {
-      console.log("Campanha já existente hoje:", existente);
       return res.status(400).json({
         error: "⚠️ Já existe um QR Code gerado para hoje. Contate o suporte para desbloqueio."
       });
@@ -49,7 +39,7 @@ router.post("/", authMiddleware, async (req, res) => {
       vacina_id,
       dose,
       data: dataISO,
-      aplicador: aplicador.trim(),
+      aplicador_id: aplicadorId,
       encerrada: false,
       criado_em: new Date().toISOString()
     };
@@ -57,20 +47,13 @@ router.post("/", authMiddleware, async (req, res) => {
     const { data: nova, error: insertError } = await supabase
       .from("campanhas")
       .insert([payload])
-      .select("*, vacinas(nome, fabricante)");
+      .select("id, vacina_id, dose, data, encerrada, criado_em, vacinas(nome, fabricante), aplicador:aplicador_id(nome)");
 
-    if (insertError) {
-      const msg = (insertError.message || "").toLowerCase();
-      if (msg.includes("duplicate") || msg.includes("unique")) {
-        return res.status(400).json({
-          error: "⚠️ Já existe um QR Code gerado para hoje. Contate o suporte para desbloqueio."
-        });
-      }
-      return res.status(500).json({ error: insertError.message });
-    }
+    if (insertError) throw insertError;
 
     console.log("Nova campanha criada com sucesso:", nova[0]);
     return res.status(201).json({ campanha: nova[0] });
+
   } catch (err) {
     console.error("ERRO AO CRIAR CAMPANHA:", err);
     return res.status(500).json({ error: "Erro ao criar campanha." });
@@ -78,27 +61,22 @@ router.post("/", authMiddleware, async (req, res) => {
 });
 
 /**
- * Verifica se já existe campanha hoje para um aplicador
+ * Verifica se já existe campanha hoje para o administrador logado
  */
 router.get("/hoje", authMiddleware, async (req, res) => {
-  const { aplicador } = req.query;
-
-  if (!aplicador) {
-    return res.status(400).json({ error: "Parâmetro 'aplicador' é obrigatório." });
-  }
-
   try {
-    const hojeISO = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
+    const aplicadorId = req.user.id;
+    const hojeISO = new Date().toISOString().split("T")[0];
 
     const { data: campanhas, error } = await supabase
       .from("campanhas")
-      .select("*, vacinas(nome, fabricante)")
+      .select("id, vacina_id, dose, data, encerrada, vacinas(nome, fabricante), aplicador:aplicador_id(nome)")
       .eq("data", hojeISO)
-      .ilike("aplicador", aplicador);
+      .eq("aplicador_id", aplicadorId);
 
     if (error) return res.status(500).json({ error: error.message });
 
-    res.json({ existe: campanhas && campanhas.length > 0, campanhas: campanhas });
+    res.json({ existe: campanhas && campanhas.length > 0, campanhas });
   } catch (err) {
     console.error("Erro ao verificar campanha de hoje:", err);
     res.status(500).json({ error: "Erro ao verificar campanha de hoje." });
@@ -112,9 +90,10 @@ router.get("/", authMiddleware, async (req, res) => {
   try {
     const { data: campanhas, error } = await supabase
       .from("campanhas")
-      .select("*, vacinas(nome, fabricante)");
+      .select("id, vacina_id, dose, data, encerrada, vacinas(nome, fabricante), aplicador:aplicador_id(nome)");
 
     if (error) return res.status(500).json({ error: error.message });
+
     console.log(`GET /campanhas - ${campanhas.length} campanhas retornadas`);
     res.json(campanhas);
   } catch (err) {
@@ -131,14 +110,12 @@ router.get("/:id", authMiddleware, async (req, res) => {
   try {
     const { data: campanha, error } = await supabase
       .from("campanhas")
-      .select("*, vacinas(nome, fabricante)")
+      .select("id, vacina_id, dose, data, encerrada, vacinas(nome, fabricante), aplicador:aplicador_id(nome)")
       .eq("id", id)
       .single();
 
-    if (error || !campanha) {
-      console.log("GET /campanhas/:id - não encontrada:", id);
-      return res.status(404).json({ error: "Campanha não encontrada." });
-    }
+    if (error || !campanha) return res.status(404).json({ error: "Campanha não encontrada." });
+
     console.log("GET /campanhas/:id - encontrada:", campanha);
     res.json(campanha);
   } catch (err) {
@@ -152,8 +129,8 @@ router.get("/:id", authMiddleware, async (req, res) => {
  */
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
-  const adminKey = req.headers["x-admin-key"];
-  const adminName = req.headers["x-admin-name"] || "admin-unknown";
+  const adminKey = req.headers["x-admin-key"]?.trim();
+  const adminName = req.headers["x-admin-name"]?.trim() || "admin-unknown";
 
   if (!adminKey || adminKey !== process.env.ADMIN_KEY) {
     console.log("DELETE /campanhas/:id - acesso negado");
@@ -173,12 +150,14 @@ router.delete("/:id", async (req, res) => {
         atualizado_em: timestamp
       })
       .eq("id", id)
-      .select("*, vacinas(nome, fabricante)");
+      .select("id, vacina_id, dose, data, encerrada, deleted, vacinas(nome, fabricante)");
 
     if (error) return res.status(500).json({ error: error.message });
-    if (!updated || updated.length === 0) return res.status(404).json({ error: "Campanha não encontrada." });
+    if (!updated || updated.length === 0)
+      return res.status(404).json({ error: "Campanha não encontrada." });
 
-    console.log(`Campanha deletada pelo admin "${adminName}":`, updated[0]);
+    console.log(`Campanha deletada pelo admin "${adminName}" - IP: ${req.ip}`, updated[0]);
+
     return res.json({
       message: "Campanha marcada como deletada (soft-delete).",
       campanha: updated[0]
@@ -189,24 +168,32 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+
 /**
  * Encerrar campanha
  */
-router.post("/:id/encerrar", authMiddleware,  async (req, res) => {
+router.post("/:id/encerrar", authMiddleware, async (req, res) => {
   const { id } = req.params;
 
   try {
+    const timestamp = new Date().toISOString();
+
     const { data: updated, error } = await supabase
       .from("campanhas")
-      .update({ encerrada: true, atualizado_em: new Date().toISOString() })
+      .update({ 
+        encerrada: true, 
+        atualizado_em: timestamp 
+      })
       .eq("id", id)
-      .select("*, vacinas(nome, fabricante)");
+      .select("id, vacina_id, dose, data, encerrada, vacinas(nome, fabricante), aplicador:aplicador_id(nome)");
 
     if (error) return res.status(500).json({ error: error.message });
-    console.log("Campanha encerrada:", updated && updated[0]);
+    if (!updated || updated.length === 0) return res.status(404).json({ error: "Campanha não encontrada." });
+
+    console.log("Campanha encerrada:", updated[0]);
     res.status(200).json({
       message: "Campanha encerrada com sucesso.",
-      campanha: updated && updated[0]
+      campanha: updated[0]
     });
   } catch (err) {
     console.error("Erro ao encerrar campanha:", err);

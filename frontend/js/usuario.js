@@ -119,6 +119,7 @@ async function carregarUsuario() {
         <p>Data: ${v.data_aplicacao ? formatarData(v.data_aplicacao) : "-"}</p>
         <p>Posto: ${v.postos_vacinacao?.nome || "-"}</p>
         <p>Lote: ${v.lote || "-"}</p>
+        <p>Aplicador: ${v.aplicador?.nome || "-"}</p>
       `;
       if (isPendente) pendentesDiv.appendChild(card);
       else concluidasDiv.appendChild(card);

@@ -2,7 +2,6 @@ import express from "express";
 import { supabase } from "../db.js";
 import { authMiddleware } from "../middleware/auth.js";
 
-
 const router = express.Router();
 
 // Buscar usuário pelo número do cartão de vacina
@@ -23,10 +22,11 @@ router.get("/:cartao_vacina", authMiddleware, async (req, res) => {
       return res.status(404).json({ error: "Usuário não encontrado" });
     }
 
-    // Buscar vacinas do usuário + info da campanha + info do posto
+    // Buscar vacinas do usuário + info da campanha + posto + aplicador
     const { data: vacinas, error: vacinasError } = await supabase
       .from("usuario_vacinas")
-      .select(`
+      .select(
+        `
         id,
         data_aplicacao,
         dose_tipo,
@@ -41,14 +41,18 @@ router.get("/:cartao_vacina", authMiddleware, async (req, res) => {
         campanhas (
           id,
           dose,
-          data,
-          aplicador
+          data
         ),
         postos_vacinacao (
           id,
           nome
+        ),
+        aplicador:aplicador_id (
+          id,
+          nome
         )
-      `)
+      `
+      )
       .eq("usuario_id", usuario.user_id);
 
     if (vacinasError) throw vacinasError;
@@ -58,7 +62,7 @@ router.get("/:cartao_vacina", authMiddleware, async (req, res) => {
     // Resposta final
     res.json({
       usuario,
-      vacinas: vacinas || []
+      vacinas: vacinas || [],
     });
   } catch (err) {
     console.error("usuarioBuscar error:", err);

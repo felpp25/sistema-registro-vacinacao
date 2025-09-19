@@ -34,7 +34,7 @@ app.use(express.json());
 
 // Rotas da API
 app.use("/campanhas", authMiddleware, campanhaRoutes);
-app.use("/admin", adminRoutes); // registrar/login não precisa de token
+app.use("/admin", adminRoutes);
 app.use("/usuarios", authMiddleware, usuarioRoutes);
 app.use("/vacinas", authMiddleware, vacinasRoutes);
 app.use("/usuariosregistrar", authMiddleware, usuarioRegistrarRoutes);

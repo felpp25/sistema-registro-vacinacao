@@ -1,7 +1,7 @@
 let dadosTemporarios = {};
+let campanhaExistenteHoje = null;
 const token = localStorage.getItem("token");
 
-// Redireciona para login se não houver token
 if (!token) {
   window.location.href = "login.html";
 }
@@ -9,10 +9,21 @@ if (!token) {
 const vacinaSelect = document.getElementById("vacina");
 const fabricanteInput = document.getElementById("fabricante");
 const mensagemErroDiv = document.getElementById("mensagem-erro");
-const aplicadorInput = document.getElementById("aplicador");
 const btnGerar = document.getElementById("btn-gerar");
 
-// Helper fetch com token
+// Botão "Visualizar Campanha Existente"
+const btnVisualizar = document.createElement("button");
+btnVisualizar.innerText = "Visualizar Campanha Existente";
+btnVisualizar.style.display = "none";
+btnVisualizar.classList.add("btn", "btn-secondary");
+btnVisualizar.addEventListener("click", () => {
+  if (campanhaExistenteHoje) exibirQRCode(campanhaExistenteHoje);
+});
+document.getElementById("formulario").appendChild(btnVisualizar);
+
+/**
+ * Função para requisições autenticadas
+ */
 async function fetchAuth(url, options = {}) {
   options.headers = {
     ...options.headers,
@@ -27,13 +38,14 @@ async function fetchAuth(url, options = {}) {
   return res.json();
 }
 
-// Carregar vacinas do backend
+/**
+ * Carregar vacinas no select
+ */
 async function carregarVacinas() {
   try {
     const vacinas = await fetchAuth("http://localhost:3000/vacinas");
-
     vacinaSelect.innerHTML = '<option value="">Selecione a vacina</option>';
-    vacinas.forEach((v) => {
+    vacinas.forEach(v => {
       const option = document.createElement("option");
       option.value = v.id;
       option.text = `${v.nome} (${v.fabricante})`;
@@ -47,13 +59,14 @@ async function carregarVacinas() {
   }
 }
 
-// Atualiza fabricante ao selecionar vacina
 vacinaSelect.addEventListener("change", () => {
   const fabricante = vacinaSelect.selectedOptions[0]?.dataset.fabricante || "";
   fabricanteInput.value = fabricante;
 });
 
-// Exibir QR Code
+/**
+ * Exibir QR Code da campanha
+ */
 function exibirQRCode(campanha) {
   dadosTemporarios = campanha;
   document.getElementById("formulario").style.display = "none";
@@ -67,34 +80,37 @@ function exibirQRCode(campanha) {
   });
 
   mensagemErroDiv.style.display = "none";
+  btnVisualizar.style.display = "none";
 }
 
-// Verifica se já existe campanha para o aplicador
-aplicadorInput.addEventListener("blur", async () => {
-  const aplicador = aplicadorInput.value.trim();
-  if (!aplicador) return;
-
+/**
+ * Verificar se já existe campanha hoje
+ */
+async function verificarCampanhaHoje() {
   try {
-    const result = await fetchAuth(
-      `http://localhost:3000/campanhas/hoje?aplicador=${encodeURIComponent(aplicador)}`
-    );
-
+    const result = await fetchAuth("http://localhost:3000/campanhas/hoje");
     if (result.existe && result.campanhas.length > 0) {
-      alert("Já existe uma campanha ativa para este aplicador hoje. Exibindo o QR Code existente.");
-      exibirQRCode(result.campanhas[0]);
+      campanhaExistenteHoje = result.campanhas[0];
+
+      mensagemErroDiv.style.display = "block";
+      mensagemErroDiv.innerText = "Já existe uma campanha ativa hoje.";
+
+      btnVisualizar.style.display = "inline-block";
     }
   } catch (err) {
     console.error("Erro ao verificar campanha existente:", err);
   }
-});
+}
 
-// Gerar QR Code
+/**
+ * Criar nova campanha
+ * ⚠️ Alert só aparece se o backend bloquear duplicata
+ */
 btnGerar.addEventListener("click", async () => {
   const vacina_id = vacinaSelect.value;
   const dose = document.getElementById("dose").value.trim();
-  const aplicador = aplicadorInput.value.trim();
 
-  if (!vacina_id || !dose || !aplicador) {
+  if (!vacina_id || !dose) {
     mensagemErroDiv.style.display = "block";
     mensagemErroDiv.innerText = "Preencha todos os campos antes de gerar o QR Code.";
     return;
@@ -103,27 +119,28 @@ btnGerar.addEventListener("click", async () => {
   try {
     const result = await fetchAuth("http://localhost:3000/campanhas", {
       method: "POST",
-      body: JSON.stringify({ vacina_id, dose, aplicador }),
+      body: JSON.stringify({ vacina_id, dose }),
     });
-
     exibirQRCode(result.campanha);
   } catch (err) {
-    console.error("Erro:", err);
-    mensagemErroDiv.style.display = "block";
-    mensagemErroDiv.innerText = "Erro ao comunicar com o servidor.";
+    if (err.message.includes("Já existe um QR Code gerado para hoje")) {
+      alert("⚠️ Já existe uma campanha ativa hoje. Você não pode criar outra.");
+    } else {
+      console.error("Erro:", err);
+      mensagemErroDiv.style.display = "block";
+      mensagemErroDiv.innerText = "Erro ao comunicar com o servidor.";
+    }
   }
 });
 
-// Encerrar campanha
+/**
+ * Encerrar campanha
+ */
 async function encerrarCampanha() {
   if (!dadosTemporarios.id) return;
 
   try {
-    const result = await fetchAuth(
-      `http://localhost:3000/campanhas/${dadosTemporarios.id}/encerrar`,
-      { method: "POST" }
-    );
-
+    await fetchAuth(`http://localhost:3000/campanhas/${dadosTemporarios.id}/encerrar`, { method: "POST" });
     alert("✅ Campanha encerrada com sucesso!");
     location.reload();
   } catch (err) {
@@ -132,9 +149,13 @@ async function encerrarCampanha() {
   }
 }
 
+/**
+ * Imprimir QR Code
+ */
 function imprimirQRCode() {
   window.print();
 }
 
-// Inicializa
+// Inicialização
 carregarVacinas();
+verificarCampanhaHoje();

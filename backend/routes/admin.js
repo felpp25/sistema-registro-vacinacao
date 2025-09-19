@@ -3,7 +3,6 @@ import { supabase } from "../db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
-import { authMiddleware } from "../middleware/auth.js";
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || "segredo_super_secreto";

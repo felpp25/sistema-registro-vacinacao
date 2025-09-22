@@ -21,11 +21,13 @@ router.post("/", authMiddleware, async (req, res) => {
 
     const dataISO = new Date().toISOString().split("T")[0];
 
+    // ✅ Verificar apenas campanhas ativas (não deletadas)
     const { data: existente, error: selectError } = await supabase
       .from("campanhas")
       .select("*")
       .eq("data", dataISO)
-      .eq("aplicador_id", aplicadorId);
+      .eq("aplicador_id", aplicadorId)
+      .eq("deleted", false); // <-- Filtro importante
 
     if (selectError) return res.status(500).json({ error: selectError.message });
 
@@ -72,7 +74,8 @@ router.get("/hoje", authMiddleware, async (req, res) => {
       .from("campanhas")
       .select("id, vacina_id, dose, data, encerrada, vacinas(nome, fabricante), aplicador:aplicador_id(nome)")
       .eq("data", hojeISO)
-      .eq("aplicador_id", aplicadorId);
+      .eq("aplicador_id", aplicadorId)
+      .eq("deleted", false); // <-- Filtra apenas campanhas ativas
 
     if (error) return res.status(500).json({ error: error.message });
 
@@ -168,7 +171,6 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-
 /**
  * Encerrar campanha
  */
@@ -202,6 +204,7 @@ router.post("/:id/encerrar", authMiddleware, async (req, res) => {
 });
 
 export default router;
+
 
 
 // import express from "express";

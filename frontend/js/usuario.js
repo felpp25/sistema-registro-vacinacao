@@ -44,13 +44,16 @@ async function carregarVacinas() {
     vacinas.forEach((v) => {
       const option = document.createElement("option");
       option.value = v.id;
-      option.textContent = `${v.nome}${v.fabricante ? " (" + v.fabricante + ")" : ""}`;
+      option.textContent = `${v.nome}${
+        v.fabricante ? " (" + v.fabricante + ")" : ""
+      }`;
       option.dataset.fabricante = v.fabricante || "";
       vacinaSelect.appendChild(option);
     });
   } catch (err) {
     console.error("Erro ao carregar vacinas:", err);
-    vacinaSelect.innerHTML = '<option value="">Erro ao carregar vacinas</option>';
+    vacinaSelect.innerHTML =
+      '<option value="">Erro ao carregar vacinas</option>';
     mensagemErroDiv.textContent = "Erro ao carregar vacinas do servidor.";
   }
 }
@@ -113,13 +116,29 @@ async function carregarUsuario() {
         doseLower.includes("retorno") ||
         doseLower.includes("pendente");
 
+      const dataAplicacao = v.data_aplicacao
+        ? new Date(v.data_aplicacao)
+        : null;
+      const proxAplicacao = v.prox_aplicacao
+        ? new Date(v.prox_aplicacao)
+        : null;
+
+      let proxText = "<p>Próx.: -</p>";
+      if (proxAplicacao && dataAplicacao && proxAplicacao > dataAplicacao) {
+        proxText = `<p>Próx.: ${formatarData(v.prox_aplicacao)}</p>`;
+      }
+
       card.className = isPendente ? "pendente-card" : "vacina-card";
       card.innerHTML = `
-        <h4>${v.vacinas?.nome || "-"} (${v.dose_tipo || "-"})</h4>
-        <p>Data: ${v.data_aplicacao ? formatarData(v.data_aplicacao) : "-"}</p>
-        <p>Posto: ${v.postos_vacinacao?.nome || "-"}</p>
+        <h4>${v.vacinas?.nome || "-"} (${v.vacinas?.fabricante || "-"})</h4>
+        <p>Dose: ${v.dose_tipo || "-"}ª</p>
         <p>Lote: ${v.lote || "-"}</p>
+        <p>Data: ${v.data_aplicacao ? formatarData(v.data_aplicacao) : "-"}</p>
+        ${proxText}
+        <p>Posto: ${v.postos_vacinacao?.nome || "-"}</p>
         <p>Aplicador: ${v.aplicador?.nome || "-"}</p>
+        <p>Campanha: ${v.campanhas?.nome || "-"}</p>
+        <p>--------------------------------------------------------------------------</p>
       `;
       if (isPendente) pendentesDiv.appendChild(card);
       else concluidasDiv.appendChild(card);

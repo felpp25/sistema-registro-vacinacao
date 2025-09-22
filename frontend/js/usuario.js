@@ -130,6 +130,7 @@ async function carregarUsuario() {
 
       card.className = isPendente ? "pendente-card" : "vacina-card";
       card.innerHTML = `
+        <p><strong>Vacinado:</strong></p>
         <h4>${v.vacinas?.nome || "-"} (${v.vacinas?.fabricante || "-"})</h4>
         <p>Dose: ${v.dose_tipo || "-"}ª</p>
         <p>Lote: ${v.lote || "-"}</p>
@@ -138,7 +139,7 @@ async function carregarUsuario() {
         <p>Posto: ${v.postos_vacinacao?.nome || "-"}</p>
         <p>Aplicador: ${v.aplicador?.nome || "-"}</p>
         <p>Campanha: ${v.campanhas?.nome || "-"}</p>
-        <p>--------------------------------------------------------------------------</p>
+        <br>
       `;
       if (isPendente) pendentesDiv.appendChild(card);
       else concluidasDiv.appendChild(card);

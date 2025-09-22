@@ -5,21 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login - Carteira de Vacinação</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<style>
-  /* Linha diagonal entre colunas */
-  .diagonal-separator::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -20%;
-    width: 150%;
-    height: 100%;
-    background: rgba(255,255,255,0.08);
-    transform: rotate(-12deg);
-    z-index: 10;
-    pointer-events: none;
-  }
-</style>
 </head>
 <body class="bg-gray-100 font-sans">
 
@@ -33,16 +18,17 @@
     <div class="absolute bottom-0 -right-20 w-72 h-72 bg-white/5 rounded-full rotate-45"></div>
 
     <!-- Imagens lado a lado -->
+    <h1 class="text-3xl font-bold text-center">Carteira de Vacinação Digital</h1>
     <div class="flex gap-4 mb-4">
       <img src="./assets/familia-feliz.jpg" alt="Inovação" class="rounded-xl shadow-lg w-36 h-36 object-cover">
       <img src="./assets/criança.jpg" alt="Praticidade" class="rounded-xl shadow-lg w-36 h-36 object-cover">
     </div>
 
-    <h1 class="text-3xl font-bold text-center">Carteira de Vacinação Digital</h1>
     <p class="text-center max-w-md text-lg">
       Praticidade, inovação e segurança na palma da sua mão. 
       Registre, acompanhe e organize todas as vacinas de forma rápida e confiável.
     </p>
+    <img src="./assets/virgulas-invertidas.png" alt="virgulas-invertidas" class="rounded-xl shadow-lg w-36 h-36 object-cover">
   </div>
 
   <!-- Coluna direita: login -->
@@ -84,7 +70,7 @@
 </div>
 
 <!-- Rodapé -->
-<footer class="w-full bg-gray-100 py-4 mt-auto border-t border-gray-200">
+<footer class="w-full bg-pink-200 py-4 mt-auto border-t border-black-300">
   <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-gray-600 text-sm">
     <div class="flex gap-4 mb-2 md:mb-0">
       <a href="termos.html" class="hover:text-gray-800 transition">Termos de Uso</a>

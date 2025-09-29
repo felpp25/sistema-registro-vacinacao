@@ -46,6 +46,7 @@ app.use("/usuarios", authMiddleware, usuarioRoutes);
 app.use("/vacinas", authMiddleware, vacinasRoutes);
 app.use("/usuariosregistrar", authMiddleware, usuarioRegistrarRoutes);
 app.use("/postos", authMiddleware, postosRoutes);
+// app.use("/campanhas", authMiddleware, campanhasRoutes);
 
 // ===============================
 // 🚀 Opção 2: Servir frontend localmente pelo Node
@@ -56,7 +57,7 @@ app.use("/postos", authMiddleware, postosRoutes);
 // app.use(express.static(path.join(__dirname, "../frontend/public")));
 
 // app.get("/", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../frontend/public/index.html"));
+//   res.sendFile(path.join(__dirname, "../frontend/public/login.html"));
 // });
 
 // ===============================

@@ -41,4 +41,3 @@ document.addEventListener("DOMContentLoaded", () => {
     .catch(error => console.error("Erro ao carregar navbar:", error));
 });
 
-console.log("Hello Hord")

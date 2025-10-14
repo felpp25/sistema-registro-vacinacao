@@ -45,6 +45,7 @@ app.use("/admin", adminRoutes);
 app.use("/usuarios", authMiddleware, usuarioRoutes);
 app.use("/vacinas", authMiddleware, vacinasRoutes);
 app.use("/usuariosregistrar", authMiddleware, usuarioRegistrarRoutes);
+app.use("/usuarioRegistrar", authMiddleware, usuarioRegistrarRoutes); // Adicionada esta linha para lidar com o endpoint singular
 app.use("/postos", authMiddleware, postosRoutes);
 // app.use("/campanhas", authMiddleware, campanhasRoutes);
 

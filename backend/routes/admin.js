@@ -89,7 +89,7 @@ router.post("/recuperar-senha", async (req, res) => {
 
     if (admin) {
       const token = jwt.sign({ id: admin.id }, JWT_SECRET, { expiresIn: "15m" });
-      const resetLink = `http://localhost:3000/reset-senha.html?token=${token}`;
+      const resetLink = `http://localhost:3000/frontend/reset-senha.html?token=${token}`;
 
       const transporter = nodemailer.createTransport({
         service: "gmail",

@@ -4,35 +4,46 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Menu Inicial - Carteira de Vacinação</title>
+    <link
+      rel="shortcut icon"
+      href="./assets/logobranca.png"
+      type="image/x-icon"
+    />
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+    </style>
   </head>
-  <body class="bg-gray-100 font-sans">
+  <body
+    class="bg-gradient-to-b from-[#e0f2f1] to-white text-gray-800 min-h-screen mt-24"
+  >
     <!-- Navbar fixa -->
     <div id="navbar-container"></div>
 
-    <!-- Menu principal -->
-    <div class="flex flex-col items-center justify-center mt-32 gap-8 px-4">
+    <!-- Conteúdo principal -->
+    <div
+      class="flex flex-col items-center justify-center gap-10 px-6 pt-32 pb-10"
+    >
+      <!-- Buscar / Registrar -->
+      <button
+        id="buscarRegistrarBtn"
+        class="w-full max-w-lg bg-[#00796b] text-white font-semibold text-2xl px-12 py-8 rounded-3xl shadow-lg flex items-center justify-center gap-5 hover:scale-105 hover:bg-[#00695c] transition-all duration-300"
+      >
+        <img src="./assets/pesquisa.png" alt="Buscar" class="h-10 w-10" />
+        Buscar / Registrar
+      </button>
 
-  <!-- Buscar / Registrar -->
-  <button
-    id="buscarRegistrarBtn"
-    class="w-full max-w-2xl bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold text-2xl px-12 py-6 rounded-3xl shadow-xl flex items-center justify-center gap-5 hover:from-blue-600 hover:to-blue-800 transition duration-300"
-  >
-    <img src="./assets/pesquisa.png" alt="Buscar" class="h-10 w-10" />
-    Buscar / Registrar
-  </button>
-
-  <!-- Nova Campanha -->
-  <button
-    onclick="window.location.href='campanha.html'"
-    class="w-full max-w-2xl bg-gradient-to-r from-blue-400 to-blue-600 text-white font-bold text-2xl px-12 py-6 rounded-3xl shadow-xl flex items-center justify-center gap-5 hover:from-blue-500 hover:to-blue-700 transition duration-300"
-  >
-    <img src="./assets/campanha.png" alt="Campanha" class="h-10 w-10" />
-    Nova Campanha
-  </button>
-
-</div>
-
+      <!-- Nova Campanha -->
+      <button
+        onclick="window.location.href='campanha.html'"
+        class="w-full max-w-lg bg-[#004d40] text-white font-semibold text-2xl px-12 py-8 rounded-3xl shadow-lg flex items-center justify-center gap-5 hover:scale-105 hover:bg-[#003f35] transition-all duration-300"
+      >
+        <img src="./assets/campanha.png" alt="Campanha" class="h-10 w-10" />
+        Nova Campanha
+      </button>
+    </div>
 
     <!-- Modal Buscar -->
     <div
@@ -42,19 +53,21 @@
       <div class="bg-white p-6 rounded-2xl shadow-xl relative w-11/12 max-w-md">
         <span
           id="closeModal"
-          class="absolute top-3 right-4 cursor-pointer text-gray-500 text-3xl hover:text-gray-700 transition"
+          class="absolute top-3 right-4 cursor-pointer text-gray-400 text-3xl hover:text-gray-600 transition"
           >&times;</span
         >
-        <h2 class="text-2xl font-bold mb-4 text-center">Buscar Usuário</h2>
+        <h2 class="text-xl font-semibold mb-5 text-center text-[#004d40]">
+          Buscar Usuário
+        </h2>
         <input
           type="text"
           id="cartaoInput"
           placeholder="Digite o número do cartão de vacinação"
-          class="w-full border border-gray-300 rounded-lg p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          class="w-full border border-gray-300 rounded-lg p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-[#00796b]"
         />
         <button
           id="buscarBtn"
-          class="w-full bg-blue-600 text-white py-3 rounded-lg shadow hover:bg-blue-700 transition duration-300 font-semibold"
+          class="w-full bg-[#00796b] text-white py-3 rounded-lg font-medium hover:bg-[#00695c] transition duration-300"
         >
           Buscar
         </button>

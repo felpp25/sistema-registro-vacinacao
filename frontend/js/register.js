@@ -24,13 +24,17 @@ registerBtn.addEventListener("click", async () => {
   }
 
   try {
-    const res = await fetch("http://localhost:3000/admin/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nome, email, senha }),
-    });
+    const res = await fetch(
+      "https://carteiravacinadigitalweb.onrender.com/admin/register",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nome, email, senha }),
+      }
+    );
 
     const data = await res.json();
+
 
     if (res.ok) {
       messageDiv.textContent = data.message;
@@ -46,5 +50,5 @@ registerBtn.addEventListener("click", async () => {
 });
 
 loginBtn.addEventListener("click", () => {
-  window.location.href = "login.html";
+  window.location.href = "index.html";
 });

@@ -1,14 +1,14 @@
 /* usuario.js — versão integrada com modal, validação e concluir/editar */
 
 // configuração
-const BASE = "http://localhost:3000";
+const BASE = "https://carteiravacinadigitalweb.onrender.com";
 const token = localStorage.getItem("token");
 const cartaoVacina =
   new URLSearchParams(window.location.search).get("cartao_vacina") || "";
 
 // redirect se não autenticado
 if (!token) {
-  window.location.href = "login.html";
+  window.location.href = "index.html";
 }
 
 // elementos do DOM principais (devem existir no HTML)
@@ -68,17 +68,21 @@ async function carregarVacinas() {
     vacinas.forEach((v) => {
       const option = document.createElement("option");
       option.value = v.id;
-      option.textContent = `${v.nome}${v.fabricante ? " (" + v.fabricante + ")" : ""}`;
+      option.textContent = `${v.nome}${
+        v.fabricante ? " (" + v.fabricante + ")" : ""
+      }`;
       option.dataset.fabricante = v.fabricante || "";
       vacinaSelect.appendChild(option);
     });
   } catch (err) {
-    vacinaSelect.innerHTML = '<option value="">Erro ao carregar vacinas</option>';
+    vacinaSelect.innerHTML =
+      '<option value="">Erro ao carregar vacinas</option>';
     mensagemErroDiv.textContent = "Erro ao carregar vacinas do servidor.";
   }
 }
 vacinaSelect?.addEventListener("change", () => {
-  fabricanteInput.value = vacinaSelect.selectedOptions[0]?.dataset.fabricante || "";
+  fabricanteInput.value =
+    vacinaSelect.selectedOptions[0]?.dataset.fabricante || "";
 });
 
 async function carregarPostos() {
@@ -104,7 +108,7 @@ function proxMaiorQueData(dataStr, proxStr) {
   const d = new Date(dataStr);
   const p = new Date(proxStr);
   // compara apenas a parte da data
-  return p.setHours(0,0,0,0) > d.setHours(0,0,0,0);
+  return p.setHours(0, 0, 0, 0) > d.setHours(0, 0, 0, 0);
 }
 
 /* ---------------- carregar usuario e listas ---------------- */
@@ -119,11 +123,13 @@ async function carregarUsuario() {
       ? formatarData(usuario.data_nascimento)
       : "-";
     document.getElementById("sexo").textContent = usuario.sexo || "-";
-    document.getElementById("cartao").textContent = usuario.cartao_vacina || cartaoVacina;
+    document.getElementById("cartao").textContent =
+      usuario.cartao_vacina || cartaoVacina;
 
     const avatarEl = document.getElementById("avatar");
     if (avatarEl) {
-      avatarEl.src = usuario.foto_perfil_url || "https://via.placeholder.com/64?text=Perfil";
+      avatarEl.src =
+        usuario.foto_perfil_url || "https://via.placeholder.com/64?text=Perfil";
       avatarEl.alt = usuario.nome || "Usuário";
     }
 
@@ -133,17 +139,20 @@ async function carregarUsuario() {
 
     // preencher concluídas com base no status ou lógica
     (data.vacinas || []).forEach((v) => {
-      const isPendente = v.status === "pendente" || (
-        !v.status && (
-          (v.prox_aplicacao && new Date(v.prox_aplicacao) > new Date(v.data_aplicacao)) ||
-          (v.dose_tipo || "").toLowerCase().includes("retorno") ||
-          (v.dose_tipo || "").toLowerCase().includes("pendente")
-        )
-      );
+      const isPendente =
+        v.status === "pendente" ||
+        (!v.status &&
+          ((v.prox_aplicacao &&
+            new Date(v.prox_aplicacao) > new Date(v.data_aplicacao)) ||
+            (v.dose_tipo || "").toLowerCase().includes("retorno") ||
+            (v.dose_tipo || "").toLowerCase().includes("pendente")));
 
-      const proxText = v.prox_aplicacao && v.data_aplicacao && new Date(v.prox_aplicacao) > new Date(v.data_aplicacao)
-        ? `<p>Próx.: ${formatarData(v.prox_aplicacao)}</p>`
-        : `<p>Próx.: -</p>`;
+      const proxText =
+        v.prox_aplicacao &&
+        v.data_aplicacao &&
+        new Date(v.prox_aplicacao) > new Date(v.data_aplicacao)
+          ? `<p>Próx.: ${formatarData(v.prox_aplicacao)}</p>`
+          : `<p>Próx.: -</p>`;
 
       // if concluded, append to concluídas list (no controls)
       if (!isPendente) {
@@ -154,7 +163,9 @@ async function carregarUsuario() {
           <h4>${v.vacinas?.nome || "-"} (${v.vacinas?.fabricante || "-"})</h4>
           <p>Dose: ${v.dose_tipo || "-"}</p>
           <p>Lote: ${v.lote || "-"}</p>
-          <p>Data: ${v.data_aplicacao ? formatarData(v.data_aplicacao) : "-"}</p>
+          <p>Data: ${
+            v.data_aplicacao ? formatarData(v.data_aplicacao) : "-"
+          }</p>
           ${proxText}
           <p>Posto: ${v.postos_vacinacao?.nome || "-"}</p>
           <p>Aplicador: ${v.aplicador?.nome || "-"}</p>
@@ -165,7 +176,6 @@ async function carregarUsuario() {
 
     // agora renderiza pendentes com botões (editar/concluir)
     await carregarPendentes(cartaoVacina, data.vacinas || []);
-
   } catch (err) {
     mensagemErroDiv.textContent = err.message || "Erro ao carregar usuário";
   }
@@ -186,55 +196,71 @@ async function carregarPendentes(cartaoVacinaParam, vacinasCache = null) {
     pendentesDiv.innerHTML = "";
 
     // filter pendentes
-    const pendentes = vacinasList.filter(v => {
-      return v.status === "pendente" || (
-        !v.status && (
-          (v.prox_aplicacao && new Date(v.prox_aplicacao) > new Date(v.data_aplicacao)) ||
-          (v.dose_tipo || "").toLowerCase().includes("retorno") ||
-          (v.dose_tipo || "").toLowerCase().includes("pendente")
-        )
+    const pendentes = vacinasList.filter((v) => {
+      return (
+        v.status === "pendente" ||
+        (!v.status &&
+          ((v.prox_aplicacao &&
+            new Date(v.prox_aplicacao) > new Date(v.data_aplicacao)) ||
+            (v.dose_tipo || "").toLowerCase().includes("retorno") ||
+            (v.dose_tipo || "").toLowerCase().includes("pendente")))
       );
     });
 
     if (pendentes.length === 0) {
-      pendentesDiv.innerHTML = '<p class="text-sm text-gray-500">Nenhuma vacina pendente.</p>';
+      pendentesDiv.innerHTML =
+        '<p class="text-sm text-gray-500">Nenhuma vacina pendente.</p>';
       return;
     }
 
     pendentes.forEach((v) => {
-      const proxText = v.prox_aplicacao && v.data_aplicacao && new Date(v.prox_aplicacao) > new Date(v.data_aplicacao)
-        ? `<p>Próx.: ${formatarData(v.prox_aplicacao)}</p>`
-        : `<p>Próx.: -</p>`;
+      const proxText =
+        v.prox_aplicacao &&
+        v.data_aplicacao &&
+        new Date(v.prox_aplicacao) > new Date(v.data_aplicacao)
+          ? `<p>Próx.: ${formatarData(v.prox_aplicacao)}</p>`
+          : `<p>Próx.: -</p>`;
 
       const card = document.createElement("div");
-      card.className = "pendente-card bg-white p-4 rounded-lg shadow mb-3 flex flex-col gap-2";
+      card.className =
+        "pendente-card bg-white p-4 rounded-lg shadow mb-3 flex flex-col gap-2";
       card.innerHTML = `
         <div>
           <p class="text-xs text-gray-500">Vacinado:</p>
-          <h4 class="font-semibold">${v.vacinas?.nome || "-"} <span class="text-sm text-gray-400">(${v.vacinas?.fabricante || "-"})</span></h4>
+          <h4 class="font-semibold">${
+            v.vacinas?.nome || "-"
+          } <span class="text-sm text-gray-400">(${
+        v.vacinas?.fabricante || "-"
+      })</span></h4>
           <p class="text-sm">Dose: ${v.dose_tipo || "-"}</p>
           <p class="text-sm">Lote: ${v.lote || "-"}</p>
-          <p class="text-sm">Data: ${v.data_aplicacao ? formatarData(v.data_aplicacao) : "-"}</p>
+          <p class="text-sm">Data: ${
+            v.data_aplicacao ? formatarData(v.data_aplicacao) : "-"
+          }</p>
           ${proxText}
           <p class="text-sm">Posto: ${v.postos_vacinacao?.nome || "-"}</p>
           <p class="text-sm">Aplicador: ${v.aplicador?.nome || "-"}</p>
         </div>
         <div class="flex gap-2 mt-3">
-          <button data-id="${v.id}" class="btn-editar px-3 py-1 rounded bg-yellow-400 text-white">Editar</button>
-          <button data-id="${v.id}" class="btn-concluir px-3 py-1 rounded bg-green-600 text-white">Concluir</button>
+          <button data-id="${
+            v.id
+          }" class="btn-editar px-3 py-1 rounded bg-yellow-400 text-white">Editar</button>
+          <button data-id="${
+            v.id
+          }" class="btn-concluir px-3 py-1 rounded bg-green-600 text-white">Concluir</button>
         </div>
       `;
       pendentesDiv.appendChild(card);
     });
 
     // attach listeners (delegation)
-    pendentesDiv.querySelectorAll(".btn-editar").forEach(btn => {
+    pendentesDiv.querySelectorAll(".btn-editar").forEach((btn) => {
       btn.addEventListener("click", (e) => {
         const id = btn.getAttribute("data-id");
         abrirModalEditarVacina(id);
       });
     });
-    pendentesDiv.querySelectorAll(".btn-concluir").forEach(btn => {
+    pendentesDiv.querySelectorAll(".btn-concluir").forEach((btn) => {
       btn.addEventListener("click", async (e) => {
         const id = btn.getAttribute("data-id");
         if (!confirm("Marcar esta vacina como concluída?")) return;
@@ -242,7 +268,7 @@ async function carregarPendentes(cartaoVacinaParam, vacinasCache = null) {
           const payload = {
             status: "concluida",
             prox_aplicacao: null,
-            atualizado_em: new Date().toISOString()
+            atualizado_em: new Date().toISOString(),
           };
           await fetchAuth(`${BASE}/usuarioRegistrar/${id}`, {
             method: "PUT",
@@ -255,7 +281,6 @@ async function carregarPendentes(cartaoVacinaParam, vacinasCache = null) {
         }
       });
     });
-
   } catch (err) {
     mensagemErroDiv.textContent = "Erro ao carregar vacinas pendentes.";
   }
@@ -309,7 +334,15 @@ async function abrirModalEditarVacina(id) {
     const registros = usuarioRes.vacinas || [];
     const registro = registros.find((r) => String(r.id) === String(id));
     if (!registro) {
-      alert("Registro não encontrado para editar.");
+      Toastify({
+        text: "Registro não encontrado para editar.",
+        duration: 3000, // 3 segundos
+        close: true, // botão de fechar
+        gravity: "top", // posição vertical: top ou bottom
+        position: "right", // posição horizontal: left, center, right
+        backgroundColor: "linear-gradient(to right, #00b09b)", // cor personalizada
+      }).showToast();
+
       return;
     }
 
@@ -327,7 +360,14 @@ async function abrirModalEditarVacina(id) {
     modalEditar.classList.add("flex");
     editarDoseInput.focus();
   } catch (err) {
-    alert("Erro ao abrir modal de edição.");
+    Toastify({
+      text: "Erro ao abrir modal de edição.",
+      duration: 3000, // 3 segundos
+      close: true, // botão de fechar
+      gravity: "top", // posição vertical: top ou bottom
+      position: "right", // posição horizontal: left, center, right
+      backgroundColor: "linear-gradient(to right, #00b09b", // cor personalizada
+    }).showToast();
   }
 }
 function fecharModalEditar() {
@@ -337,7 +377,10 @@ function fecharModalEditar() {
   modalErrorDiv.classList.add("hidden");
   modalErrorDiv.textContent = "";
 }
-btnCancelarEditar.addEventListener("click", (e) => { e.preventDefault(); fecharModalEditar(); });
+btnCancelarEditar.addEventListener("click", (e) => {
+  e.preventDefault();
+  fecharModalEditar();
+});
 editarTemRetornoCheckbox.addEventListener("change", () => {
   if (editarTemRetornoCheckbox.checked) {
     editarProxInput.disabled = false;
@@ -352,18 +395,33 @@ editarTemRetornoCheckbox.addEventListener("change", () => {
 });
 
 /* validação reativa */
-editarDataInput?.addEventListener("change", () => { modalErrorDiv.classList.add("hidden"); modalErrorDiv.textContent = ""; });
-editarProxInput?.addEventListener("change", () => { modalErrorDiv.classList.add("hidden"); modalErrorDiv.textContent = ""; });
+editarDataInput?.addEventListener("change", () => {
+  modalErrorDiv.classList.add("hidden");
+  modalErrorDiv.textContent = "";
+});
+editarProxInput?.addEventListener("change", () => {
+  modalErrorDiv.classList.add("hidden");
+  modalErrorDiv.textContent = "";
+});
 
 // submit modal -> PUT update
 formEditar.addEventListener("submit", async (e) => {
   e.preventDefault();
   try {
     const id = editarIdInput.value;
-    if (!id) return alert("ID inválido.");
-
+    if (!id)
+      return Toastify({
+        text: "ID inválido.",
+        duration: 3000, // 3 segundos
+        close: true, // botão de fechar
+        gravity: "top", // posição vertical: top ou bottom
+        position: "right", // posição horizontal: left, center, right
+        backgroundColor: "linear-gradient(to right, #00b09b)", // cor personalizada
+      }).showToast();
     const dataAplic = editarDataInput.value || null;
-    const prox = editarTemRetornoCheckbox.checked ? (editarProxInput.value || null) : null;
+    const prox = editarTemRetornoCheckbox.checked
+      ? editarProxInput.value || null
+      : null;
 
     if (editarTemRetornoCheckbox.checked) {
       if (!prox) {
@@ -372,14 +430,16 @@ formEditar.addEventListener("submit", async (e) => {
         return;
       }
       if (!proxMaiorQueData(dataAplic, prox)) {
-        modalErrorDiv.textContent = "A próxima aplicação deve ser posterior à data de aplicação.";
+        modalErrorDiv.textContent =
+          "A próxima aplicação deve ser posterior à data de aplicação.";
         modalErrorDiv.classList.remove("hidden");
         return;
       }
     }
 
     const payload = {};
-    if (editarDoseInput.value !== null) payload.dose_tipo = editarDoseInput.value;
+    if (editarDoseInput.value !== null)
+      payload.dose_tipo = editarDoseInput.value;
     if (dataAplic) payload.data_aplicacao = dataAplic;
     payload.lote = editarLoteInput.value === "" ? null : editarLoteInput.value;
     if (editarTemRetornoCheckbox.checked) {
@@ -400,13 +460,23 @@ formEditar.addEventListener("submit", async (e) => {
     fecharModalEditar();
     await carregarUsuario();
     await carregarPendentes(cartaoVacina);
-    alert("Registro atualizado com sucesso.");
+
+    Toastify({
+      text: "Registro atualizado com sucesso.",
+      duration: 3000, // 3 segundos
+      close: true, // botão de fechar
+      gravity: "top", // posição vertical: top ou bottom
+      position: "right", // posição horizontal: left, center, right
+      backgroundColor: "linear-gradient(to right, #00b09b)", // cor personalizada
+    }).showToast();
   } catch (err) {
     modalErrorDiv.textContent = "Erro ao salvar edição.";
     modalErrorDiv.classList.remove("hidden");
   }
 });
-modalEditar.addEventListener("click", (e) => { if (e.target === modalEditar) fecharModalEditar(); });
+modalEditar.addEventListener("click", (e) => {
+  if (e.target === modalEditar) fecharModalEditar();
+});
 
 /* ---------------- Formulário principal: validação antes do POST ---------------- */
 const vacinaForm = document.getElementById("vacinaForm");
@@ -419,15 +489,17 @@ vacinaForm.addEventListener("submit", async (e) => {
 
     const dataAplic = dataAplicInput.value || null;
     const temRetorno = temRetornoCheckbox && temRetornoCheckbox.checked;
-    const proxVal = temRetorno ? (proxAplicacaoInput.value || null) : null;
+    const proxVal = temRetorno ? proxAplicacaoInput.value || null : null;
 
     if (temRetorno) {
       if (!proxVal) {
-        mensagemErroDiv.textContent = "Se marcou retorno, informe a data da próxima aplicação.";
+        mensagemErroDiv.textContent =
+          "Se marcou retorno, informe a data da próxima aplicação.";
         return;
       }
       if (!proxMaiorQueData(dataAplic, proxVal)) {
-        mensagemErroDiv.textContent = "A próxima aplicação deve ser posterior à data de aplicação.";
+        mensagemErroDiv.textContent =
+          "A próxima aplicação deve ser posterior à data de aplicação.";
         return;
       }
     }
@@ -444,7 +516,7 @@ vacinaForm.addEventListener("submit", async (e) => {
       tem_retorno: temRetorno ? true : false,
       status: temRetorno ? "pendente" : "concluida",
       criado_em: new Date().toISOString(),
-      atualizado_em: new Date().toISOString()
+      atualizado_em: new Date().toISOString(),
     };
 
     await fetchAuth(`${BASE}/usuarioRegistrar`, {

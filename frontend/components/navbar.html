@@ -1,39 +1,63 @@
 <!-- Navbar -->
-<nav class="fixed top-0 left-0 w-full bg-white/80 backdrop-blur-md shadow-md z-50">
+<nav
+  class="fixed top-0 left-0 w-full bg-white/80 backdrop-blur-lg shadow-md z-50"
+>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between h-16 items-center">
-      
+    <div class="flex justify-between h-24 items-center">
       <!-- Logo -->
-      <div class="flex-shrink-0">
-        <img src="./assets/logo.png" alt="Logo" class="h-10">
+      <div class="flex-shrink-0 flex items-center">
+        <a href="menu.html">
+          <img
+            src="./assets/logoapp.png"
+            alt="Logo"
+            class="h-24 hover:scale-110 transition-all"
+          />
+        </a>
       </div>
 
       <!-- Botões -->
-      <div class="flex space-x-2">
-        <!-- Suporte -->
-        <a href="menu.html" id="inicioBtn"
-           class="bg-gradient-to-r from-purple-400 to-purple-600 text-white px-4 py-2 rounded-lg shadow-md hover:from-purple-500 hover:to-purple-700 transition">
-          Inicio
+      <div class="flex space-x-3">
+        <!-- Início -->
+        <a
+          href="menu.html"
+          id="inicioBtn"
+          class="bg-[#00796b] text-white px-4 py-2 rounded-xl shadow-md hover:bg-[#00695c] transition font-medium"
+        >
+          Início
         </a>
 
-        <a href="https://wa.me/5562986442841?text=Olá, preciso de suporte" target="_blank"
-           class="bg-gradient-to-r from-blue-400 to-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:from-blue-500 hover:to-blue-700 transition">
+        <!-- Suporte -->
+        <a
+          href="https://wa.me/5562986442841?text=Olá, preciso de suporte"
+          target="_blank"
+          class="bg-[#26a69a] text-white px-4 py-2 rounded-xl shadow-md hover:bg-[#1f8e83] transition font-medium"
+        >
           Suporte
         </a>
 
-        <!-- Botões dinâmicos -->
-        <button id="logoutBtn"
-           class="bg-gradient-to-r from-red-400 to-red-600 text-white px-4 py-2 rounded-lg shadow-md hover:from-red-500 hover:to-red-700 transition hidden">
+        <!-- Logout -->
+        <button
+          id="logoutBtn"
+          class="bg-[#d32f2f] text-white px-4 py-2 rounded-xl shadow-md hover:bg-[#b71c1c] transition font-medium hidden"
+        >
           Sair
         </button>
 
-        <a href="register.html" id="registerBtn"
-           class="bg-gradient-to-r from-green-400 to-green-600 text-white px-4 py-2 rounded-lg shadow-md hover:from-green-500 hover:to-green-700 transition hidden">
+        <!-- Registrar -->
+        <a
+          href="register.html"
+          id="registerBtn"
+          class="bg-[#00796b] text-white px-4 py-2 rounded-xl shadow-md hover:bg-[#00695c] transition font-medium hidden"
+        >
           Registrar
         </a>
 
-        <a href="login.html" id="loginBtn"
-           class="bg-gradient-to-r from-yellow-400 to-yellow-500 text-white px-4 py-2 rounded-lg shadow-md hover:from-yellow-500 hover:to-yellow-600 transition hidden">
+        <!-- Login -->
+        <a
+          href="login.html"
+          id="loginBtn"
+          class="bg-[#004d40] text-white px-4 py-2 rounded-xl shadow-md hover:bg-[#003f35] transition font-medium hidden"
+        >
           Login
         </a>
       </div>

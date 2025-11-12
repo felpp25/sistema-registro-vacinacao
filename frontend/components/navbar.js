@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
   // Carrega o HTML da navbar
-  fetch("./components/navbar.html")
-    .then(response => response.text())
-    .then(data => {
+  fetch("/components/navbar.html")
+    .then((response) => response.text())
+    .then((data) => {
       document.getElementById("navbar-container").innerHTML = data;
 
       // Define a visibilidade dos botões conforme a página
@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (page === "login") {
         registerBtn.classList.remove("hidden");
-        loginBtn.classList
+        loginBtn.classList;
       } else if (page === "register") {
         loginBtn.classList.remove("hidden");
       } else if (page === "reset") {
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
         logoutBtn.classList.remove("hidden");
       }
 
-      if (page === "index"){
+      if (page === "index") {
         incioBtn.classList.remove("hidden");
       }
 
@@ -34,10 +34,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (logoutBtn) {
         logoutBtn.addEventListener("click", () => {
           localStorage.removeItem("token");
-          window.location.href = "login.html";
+          window.location.href = "index.html";
         });
       }
     })
-    .catch(error => console.error("Erro ao carregar navbar:", error));
+    .catch((error) => console.error("Erro ao carregar navbar:", error));
 });
-

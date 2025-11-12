@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Carteira de Vacinação</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="shortcut icon"
+      href="./assets/logobranca.png"
+      type="image/x-icon"
+    />
+  </head>
+  <body class="bg-gray-100 font-sans">
+    <div class="flex flex-col md:flex-row min-h-screen relative">
+      <!-- Coluna esquerda: imagens + propaganda -->
+      <div
+        class="md:w-1/2 bg-[#00796b] text-white flex flex-col items-center justify-center p-8 gap-6 relative overflow-hidden diagonal-separator"
+      >
+        <!-- Elementos decorativos -->
+        <div
+          class="absolute -top-16 -left-16 w-60 h-60 bg-white/10 rounded-full animate-pulse"
+        ></div>
+        <div
+          class="absolute bottom-0 -right-20 w-72 h-72 bg-white/5 rounded-full rotate-45"
+        ></div>
+
+        <!-- Imagens lado a lado -->
+        <h1 class="text-3xl font-bold text-center">
+          Carteira de Vacinação Digital
+        </h1>
+        <div class="flex gap-4 mb-4">
+          <img
+            src="./assets/familia-feliz.jpg"
+            alt="Inovação"
+            class="rounded-xl shadow-lg w-36 h-36 object-cover"
+          />
+          <img
+            src="./assets/criança.jpg"
+            alt="Praticidade"
+            class="rounded-xl shadow-lg w-36 h-36 object-cover"
+          />
+        </div>
+
+        <p class="text-center max-w-md text-lg">
+          Praticidade, inovação e segurança na palma da sua mão. Registre,
+          acompanhe e organize todas as vacinas de forma rápida e confiável.
+        </p>
+        <img
+          src="./assets/logobranca.png"
+          alt="virgulas-invertidas"
+          class="w-60 h-60 hover:scale-110 transition-all"
+        />
+      </div>
+
+      <!-- Coluna direita: login -->
+      <div class="md:w-1/2 flex items-center justify-center p-8 relative z-20">
+        <div class="bg-white shadow-xl rounded-2xl p-10 w-full max-w-md">
+          <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">
+            Login
+          </h2>
+
+          <!-- Inputs -->
+          <div class="flex flex-col gap-4">
+            <input
+              type="email"
+              id="email"
+              placeholder="Email"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00796b] transition"
+            />
+
+            <div class="relative">
+              <input
+                type="password"
+                id="senha"
+                placeholder="Senha"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00796b] transition"
+              />
+              <button
+                type="button"
+                id="toggleSenha"
+                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                🙈
+              </button>
+            </div>
+          </div>
+
+          <!-- Botão Entrar -->
+          <button
+            id="loginBtn"
+            class="mt-6 w-full bg-[#00796b] text-white font-semibold py-3 rounded-2xl shadow-md hover:bg-[#00695c] transition transform hover:scale-[1.02] flex items-center justify-center gap-2"
+          >
+            Entrar
+          </button>
+
+          <p id="errorMsg" class="mt-4 text-red-500 text-sm text-center"></p>
+
+          <div class="mt-6 flex justify-between text-sm text-gray-500">
+            <a href="register.html" class="hover:text-[#00796b] transition"
+              >Registrar</a
+            >
+            <a href="recuperar.html" class="hover:text-[#00796b] transition"
+              >Esqueci a senha</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rodapé -->
+    <footer class="w-full bg-white py-4 mt-auto border-t border-black-300">
+      <div
+        class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-gray-600 text-sm"
+      >
+        <div class="flex gap-4 mb-2 md:mb-0">
+          <a href="termos.html" class="hover:text-gray-800 transition"
+            >Termos de Uso</a
+          >
+          <a href="privacidade.html" class="hover:text-gray-800 transition"
+            >Política de Privacidade</a
+          >
+        </div>
+        <div>© 2025 Sistema de Vacinação Digital</div>
+      </div>
+    </footer>
+
+    <script>
+      const senhaInput = document.getElementById("senha");
+      const toggleSenha = document.getElementById("toggleSenha");
+
+      toggleSenha.addEventListener("click", () => {
+        if (senhaInput.type === "password") {
+          senhaInput.type = "text";
+          toggleSenha.textContent = "🙉";
+        } else {
+          senhaInput.type = "password";
+          toggleSenha.textContent = "🙈";
+        }
+      });
+    </script>
+
+    <script src="./js/login.js"></script>
+  </body>
+</html>

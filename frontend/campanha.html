@@ -1,62 +1,118 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gerador de QR Code - Campanha</title>
-  
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-</head>
-<body class="bg-gray-100 font-sans min-h-screen">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="./assets/logobranca.png"
+      type="image/x-icon"
+    />
 
-  <!-- Navbar -->
-  <div id="navbar-container"></div>  
+    <title>Gerador de QR Code - Campanha</title>
 
-  <div class="max-w-4xl mx-auto mt-24 p-6 bg-white rounded-xl shadow-lg">
-    <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Gerador de QR Code - Campanha</h1>
+    <!-- Toastify CSS -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
 
-    <!-- Formulário -->
-    <div id="formulario" class="space-y-4">
-      <div class="flex flex-col">
-        <label class="mb-1 text-gray-700 font-medium">Vacina:</label>
-        <select id="vacina" class="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"></select>
+    <!-- Toastify JS -->
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+    </style>
+  </head>
+
+  <body
+    class="min-h-screen bg-gradient-to-b from-teal-50 via-white to-teal-100 text-gray-800"
+  >
+    <!-- Navbar -->
+    <div id="navbar-container"></div>
+
+    <!-- Container principal -->
+    <div
+      class="max-w-3xl mx-auto mt-28 p-8 bg-white rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.1)]"
+    >
+      <!-- Título -->
+      <h1 class="text-3xl font-bold text-[#00796b] mb-8 text-center">
+        Gerador de QR Code - Campanha
+      </h1>
+
+      <!-- Formulário -->
+      <div id="formulario" class="space-y-5">
+        <div class="flex flex-col">
+          <label class="mb-1 text-gray-700 font-semibold">Vacina:</label>
+          <select
+            id="vacina"
+            class="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#00796b] transition"
+          ></select>
+        </div>
+
+        <div class="flex flex-col">
+          <label class="mb-1 text-gray-700 font-semibold">Fabricante:</label>
+          <input
+            type="text"
+            id="fabricante"
+            readonly
+            class="border border-gray-300 rounded-lg p-3 bg-gray-100 cursor-not-allowed text-gray-600"
+          />
+        </div>
+
+        <div class="flex flex-col">
+          <label class="mb-1 text-gray-700 font-semibold">Dose:</label>
+          <input
+            type="text"
+            id="dose"
+            placeholder="1ª, 2ª, reforço..."
+            class="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#00796b] transition"
+          />
+        </div>
+
+        <button
+          id="btn-gerar"
+          class="w-full py-3 mt-3 bg-[#00796b] text-white font-semibold rounded-xl shadow-md hover:bg-[#00695c] transition transform hover:scale-[1.02]"
+        >
+          Gerar QR Code
+        </button>
+
+        <div
+          id="mensagem-erro"
+          class="text-red-500 font-medium mt-2 text-center"
+        ></div>
       </div>
 
-      <div class="flex flex-col">
-        <label class="mb-1 text-gray-700 font-medium">Fabricante:</label>
-        <input type="text" id="fabricante" readonly class="border border-gray-300 rounded-md p-2 bg-gray-100 cursor-not-allowed">
+      <!-- QR Code -->
+      <div id="qrcode-container" class="mt-10 text-center hidden">
+        <div id="qrcode" class="mx-auto mb-6"></div>
+        <div class="flex justify-center gap-5">
+          <button
+            onclick="encerrarCampanha()"
+            class="px-6 py-2 bg-red-600 text-white rounded-xl shadow-md hover:bg-red-700 transition transform hover:scale-[1.03]"
+          >
+            Encerrar
+          </button>
+          <button
+            onclick="imprimirQRCode()"
+            class="px-6 py-2 bg-[#00796b] text-white rounded-xl shadow-md hover:bg-[#00695c] transition transform hover:scale-[1.03]"
+          >
+            Imprimir QR Code
+          </button>
+        </div>
       </div>
-
-      <div class="flex flex-col">
-        <label class="mb-1 text-gray-700 font-medium">Dose:</label>
-        <input type="text" id="dose" placeholder="1ª, 2ª, reforço..." class="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
-      </div>
-
-      <button id="btn-gerar" class="w-full py-3 mt-2 bg-blue-600 bg-opacity-80 hover:bg-opacity-100 text-white font-semibold rounded-lg transition">
-        Gerar QR Code
-      </button>
-
-      <div id="mensagem-erro" class="text-red-500 font-medium mt-2"></div>
     </div>
 
-    <!-- QR Code -->
-    <div id="qrcode-container" class="mt-8 text-center" style="display: none;">
-      <div id="qrcode" class="mx-auto mb-4"></div>
-      <div class="flex justify-center gap-4">
-        <button onclick="encerrarCampanha()" class="px-4 py-2 bg-red-500 bg-opacity-70 hover:bg-opacity-100 text-white rounded-lg transition">
-          Encerrar
-        </button>
-        <button onclick="imprimirQRCode()" class="px-4 py-2 bg-green-500 bg-opacity-70 hover:bg-opacity-100 text-white rounded-lg transition">
-          Imprimir QR Code
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Scripts -->
-  <script src="./components/navbar.js"></script>
-  <script src="./js/campanha.js"></script>
-
-</body>
+    <!-- Scripts -->
+    <script src="./components/navbar.js"></script>
+    <script src="./js/campanha.js"></script>
+  </body>
 </html>

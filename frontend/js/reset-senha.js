@@ -34,11 +34,14 @@ resetBtn.addEventListener("click", async () => {
   }
 
   try {
-    const res = await fetch("http://localhost:3000/admin/reset-senha", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token, novaSenha }),
-    });
+    const res = await fetch(
+      "https://carteiravacinadigitalweb.onrender.com/admin/reset-senha",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token, novaSenha }),
+      }
+    );
 
     const data = await res.json();
     if (res.ok) {

@@ -3,7 +3,7 @@ let campanhaExistenteHoje = null;
 const token = localStorage.getItem("token");
 
 if (!token) {
-  window.location.href = "login.html";
+  window.location.href = "index.html";
 }
 
 const vacinaSelect = document.getElementById("vacina");
@@ -43,9 +43,11 @@ async function fetchAuth(url, options = {}) {
  */
 async function carregarVacinas() {
   try {
-    const vacinas = await fetchAuth("http://localhost:3000/vacinas");
+    const vacinas = await fetchAuth(
+      "https://carteiravacinadigitalweb.onrender.com/vacinas"
+    );
     vacinaSelect.innerHTML = '<option value="">Selecione a vacina</option>';
-    vacinas.forEach(v => {
+    vacinas.forEach((v) => {
       const option = document.createElement("option");
       option.value = v.id;
       option.text = `${v.nome} (${v.fabricante})`;
@@ -74,7 +76,7 @@ function exibirQRCode(campanha) {
 
   document.getElementById("qrcode").innerHTML = "";
   new QRCode(document.getElementById("qrcode"), {
-    text: `http://localhost:3000/campanhas/${campanha.id}`,
+    text: `https://carteiravacinadigitalweb.onrender.com/campanhas/${campanha.id}`,
     width: document.getElementById("qrcode").clientWidth,
     height: document.getElementById("qrcode").clientWidth,
   });
@@ -88,7 +90,9 @@ function exibirQRCode(campanha) {
  */
 async function verificarCampanhaHoje() {
   try {
-    const result = await fetchAuth("http://localhost:3000/campanhas/hoje");
+    const result = await fetchAuth(
+      "https://carteiravacinadigitalweb.onrender.com/campanhas/hoje"
+    );
     if (result.existe && result.campanhas.length > 0) {
       campanhaExistenteHoje = result.campanhas[0];
 
@@ -112,19 +116,30 @@ btnGerar.addEventListener("click", async () => {
 
   if (!vacina_id || !dose) {
     mensagemErroDiv.style.display = "block";
-    mensagemErroDiv.innerText = "Preencha todos os campos antes de gerar o QR Code.";
+    mensagemErroDiv.innerText =
+      "Preencha todos os campos antes de gerar o QR Code.";
     return;
   }
 
   try {
-    const result = await fetchAuth("http://localhost:3000/campanhas", {
-      method: "POST",
-      body: JSON.stringify({ vacina_id, dose }),
-    });
+    const result = await fetchAuth(
+      "https://carteiravacinadigitalweb.onrender.com/campanhas",
+      {
+        method: "POST",
+        body: JSON.stringify({ vacina_id, dose }),
+      }
+    );
     exibirQRCode(result.campanha);
   } catch (err) {
     if (err.message.includes("Já existe um QR Code gerado para hoje")) {
-      alert("⚠️ Já existe uma campanha ativa hoje. Você não pode criar outra.");
+      Toastify({
+        text: "⚠️ Já existe uma campanha ativa hoje. Você não pode criar outra.",
+        duration: 3000, // 3 segundos
+        close: true, // botão de fechar
+        gravity: "top", // posição vertical: top ou bottom
+        position: "right", // posição horizontal: left, center, right
+        backgroundColor: "linear-gradient(to right, #00b09b)", // cor personalizada
+      }).showToast();
     } else {
       console.error("Erro:", err);
       mensagemErroDiv.style.display = "block";
@@ -140,7 +155,10 @@ async function encerrarCampanha() {
   if (!dadosTemporarios.id) return;
 
   try {
-    await fetchAuth(`http://localhost:3000/campanhas/${dadosTemporarios.id}/encerrar`, { method: "POST" });
+    await fetchAuth(
+      `https://carteiravacinadigitalweb.onrender.com/campanhas/${dadosTemporarios.id}/encerrar`,
+      { method: "POST" }
+    );
     alert("✅ Campanha encerrada com sucesso!");
     location.reload();
   } catch (err) {

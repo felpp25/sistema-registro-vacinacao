@@ -1,48 +1,78 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Redefinir Senha - Carteira de Vacinação</title>
-<!-- Tailwind CSS CDN -->
-<script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 font-sans">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redefinir Senha - Carteira de Vacinação</title>
+    <link
+      rel="shortcut icon"
+      href="./assets/logobranca.png"
+      type="image/x-icon"
+    />
 
-<!-- Container da Redefinição -->
-<div class="flex items-center justify-center min-h-screen pt-20 px-4">
-  <div class="bg-white shadow-xl rounded-2xl p-10 w-full max-w-md">
-    <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Redefinir Senha</h2>
-    
-    <!-- Input nova senha -->
-    <div class="flex flex-col gap-4">
-      <div class="relative">
-        <input type="password" id="novaSenha" placeholder="Nova senha"
-               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-12">
-        <button type="button" id="toggleSenha"
-                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
-          🙈
-        </button>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+    </style>
+  </head>
+
+  <body
+    class="min-h-screen bg-gradient-to-b from-teal-50 via-white to-teal-100 flex items-center justify-center px-4"
+  >
+    <!-- Container da Redefinição -->
+    <div
+      class="bg-white shadow-[0_4px_20px_rgba(0,0,0,0.1)] rounded-2xl p-10 w-full max-w-md"
+    >
+      <!-- Título -->
+      <h2 class="text-3xl font-bold mb-8 text-center text-[#00796b]">
+        Redefinir Senha
+      </h2>
+
+      <!-- Input nova senha -->
+      <div class="flex flex-col gap-4">
+        <div class="relative">
+          <input
+            type="password"
+            id="novaSenha"
+            placeholder="Nova senha"
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00796b] transition pr-12"
+          />
+          <button
+            type="button"
+            id="toggleSenha"
+            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-[#00796b] transition text-xl"
+          >
+            🙈
+          </button>
+        </div>
+      </div>
+
+      <!-- Botão Alterar -->
+      <button
+        id="resetBtn"
+        class="mt-6 w-full bg-[#00796b] text-white font-semibold py-3 rounded-xl shadow-md hover:bg-[#00695c] transition transform hover:scale-[1.02]"
+      >
+        Alterar Senha
+      </button>
+
+      <!-- Mensagem de feedback -->
+      <p
+        id="mensagem"
+        class="mt-4 text-red-500 text-sm text-center font-medium"
+      ></p>
+
+      <!-- Link para login -->
+      <div class="mt-6 text-sm text-gray-600 text-center">
+        <a href="index.html" class="hover:text-[#00796b] font-medium transition"
+          >Voltar ao login</a
+        >
       </div>
     </div>
 
-    <!-- Botão Alterar -->
-    <button id="resetBtn"
-            class="mt-6 w-full bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold py-3 rounded-2xl shadow-lg hover:from-blue-600 hover:to-blue-800 transition duration-300">
-      Alterar Senha
-    </button>
-
-    <!-- Mensagem de feedback -->
-    <p id="mensagem" class="mt-4 text-red-500 text-sm text-center"></p>
-
-    <!-- Link para login -->
-    <div class="mt-6 text-sm text-gray-500 text-center">
-      <a href="login.html" class="hover:text-blue-500 transition">Voltar ao login</a>
-    </div>
-  </div>
-</div>
-
-<script src="./js/reset-senha.js"></script>
-
-</body>
+    <script src="./js/reset-senha.js"></script>
+  </body>
 </html>

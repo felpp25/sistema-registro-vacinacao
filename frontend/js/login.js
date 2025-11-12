@@ -1,8 +1,6 @@
 const loginBtn = document.getElementById("loginBtn");
 const errorMsg = document.getElementById("errorMsg");
 
-
-
 loginBtn.addEventListener("click", async () => {
   const email = document.getElementById("email").value.trim();
   const senha = document.getElementById("senha").value.trim();
@@ -13,12 +11,15 @@ loginBtn.addEventListener("click", async () => {
   }
 
   try {
-    const response = await fetch("http://localhost:3000/admin/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, senha }),
-    });
-  
+    const response = await fetch(
+      "https://carteiravacinadigitalweb.onrender.com/admin/login",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, senha }),
+      }
+    );
+
     const data = await response.json();
 
     if (response.ok) {

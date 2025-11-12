@@ -4,47 +4,76 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registrar Administrador - Carteira de Vacinação</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body class="bg-gray-100 font-sans">
-    <!-- Container do Registro -->
-    <div class="flex items-center justify-center min-h-screen pt-20 px-4">
-      <div class="bg-white shadow-xl rounded-2xl p-10 w-full max-w-md">
-        <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">
-          Registrar Administrador
-        </h2>
+    <!-- Toastify CSS -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
 
-        <!-- Formulário -->
-        <form id="registerForm" class="flex flex-col gap-4">
-          <input
-            type="text"
-            id="nome"
-            placeholder="Nome completo"
-            required
-            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <input
-            type="email"
-            id="email"
-            placeholder="Email"
-            required
-            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <input
-            type="password"
-            id="senha"
-            placeholder="Senha"
-            required
-            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </form>
+    <!-- Toastify JS -->
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
+    <link
+      rel="shortcut icon"
+      href="./assets/logobranca.png"
+      type="image/x-icon"
+    />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+    </style>
+  </head>
+
+  <body
+    class="min-h-screen bg-gradient-to-b from-teal-50 via-white to-teal-100 flex items-center justify-center px-4"
+  >
+    <!-- Container do Registro -->
+    <div
+      class="bg-white shadow-[0_4px_20px_rgba(0,0,0,0.1)] rounded-2xl p-10 w-full max-w-md"
+    >
+      <!-- Título -->
+      <h2 class="text-3xl font-bold mb-8 text-center text-[#00796b]">
+        Registrar Administrador
+      </h2>
+
+      <!-- Formulário -->
+      <form id="registerForm" class="flex flex-col gap-5">
+        <input
+          type="text"
+          id="nome"
+          placeholder="Nome completo"
+          required
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00796b] transition"
+        />
+
+        <input
+          type="email"
+          id="email"
+          placeholder="E-mail"
+          required
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00796b] transition"
+        />
+
+        <input
+          type="password"
+          id="senha"
+          placeholder="Senha"
+          required
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00796b] transition"
+        />
 
         <!-- Botão Registrar -->
         <button
           id="registerBtn"
           type="submit"
-          class="mt-4 w-full bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold py-3 rounded-2xl shadow-lg hover:from-blue-600 hover:to-blue-800 transition duration-300 flex items-center justify-center gap-2"
+          class="mt-2 w-full bg-[#00796b] text-white font-semibold py-3 rounded-xl shadow-md hover:bg-[#00695c] transition transform hover:scale-[1.02] flex items-center justify-center gap-2"
         >
           <img src="./assets/register.png" alt="Registrar" class="h-6 w-6" />
           Registrar
@@ -55,16 +84,22 @@
           id="loginBtn"
           type="button"
           onclick="window.location.href='login.html'"
-          class="mt-2 w-full bg-gradient-to-r from-gray-500 to-gray-700 text-white font-semibold py-3 rounded-2xl shadow-lg hover:from-gray-600 hover:to-gray-800 transition duration-300 flex items-center justify-center gap-2"
+          class="w-full bg-gray-600 text-white font-semibold py-3 rounded-xl shadow-md hover:bg-gray-700 transition transform hover:scale-[1.02] flex items-center justify-center gap-2"
         >
           <img src="./assets/login.png" alt="Login" class="h-6 w-6" />
           Fazer Login
         </button>
+      </form>
 
-        <!-- Mensagens -->
-        <p id="message" class="mt-4 text-green-500 text-sm text-center"></p>
-        <p id="error" class="mt-2 text-red-500 text-sm text-center"></p>
-      </div>
+      <!-- Mensagens -->
+      <p
+        id="message"
+        class="mt-4 text-green-600 text-sm text-center font-medium"
+      ></p>
+      <p
+        id="error"
+        class="mt-2 text-red-500 text-sm text-center font-medium"
+      ></p>
     </div>
 
     <script src="./js/register.js"></script>
